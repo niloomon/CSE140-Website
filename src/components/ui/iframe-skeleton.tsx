@@ -11,6 +11,7 @@ import { Card } from './card';
 interface IframeSkeletonProps {
   height?: string;
   className?: string;
+  text?: string; // Custom loading text
 }
 
 /**
@@ -21,7 +22,8 @@ interface IframeSkeletonProps {
  */
 export const IframeSkeleton: React.FC<IframeSkeletonProps> = ({ 
   height = '1200px',
-  className = '' 
+  className = '',
+  text = 'Loading calendar...' // Default text
 }) => {
   return (
     <div 
@@ -32,7 +34,7 @@ export const IframeSkeleton: React.FC<IframeSkeletonProps> = ({
         {/* Loading indicator */}
         <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span className="text-lg font-medium">Loading calendar...</span>
+          <span className="text-lg font-medium">{text}</span>
         </div>
       </Card>
     </div>

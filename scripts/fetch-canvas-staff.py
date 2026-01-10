@@ -210,8 +210,8 @@ def fetch_course_staff(config):
         if raw_role == 'TeacherEnrollment' or role_value == 'owner':
             instructors.append(user_data)
             instructor_users.append((user, 'instructor'))
-        # Check for TA roles
-        elif raw_role == 'TaEnrollment' or role_value == 'grader':
+        # Check for TA roles (including "TA - Site Manager" and other TA variations)
+        elif raw_role == 'TaEnrollment' or role_value == 'grader' or (raw_role and 'TA' in raw_role.upper()):
             user_data['sections'] = ''  # Can be filled from groups or manually
             tas.append(user_data)
             ta_users.append((user, 'ta'))

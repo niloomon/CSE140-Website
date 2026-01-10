@@ -5,7 +5,7 @@
  * - Course instructor with bio and contact information
  * - Teaching assistants (TAs) with their lab sections
  * - Tutors with contact information
- * - Office hours calendar embedded from Google Docs
+ * - Office hours calendar embedded from Google Calendar
  */
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -27,9 +27,9 @@ import instructorBiosData from '@/data/instructor-bio.json';
  * 
  * Displays all teaching staff information organized into sections:
  * 1. Instructor section - detailed card with bio
- * 2. Teaching Assistants section - grid of TA cards
- * 3. Tutors section - grid of tutor cards
- * 4. Office Hours section - embedded calendar iframe
+   * 2. Teaching Assistants section - grid of TA cards
+   * 3. Tutors section - grid of tutor cards
+   * 4. Office Hours section - embedded Google Calendar iframe
  */
 // Fallback data in case Canvas data is not available
 const fallbackInstructor = {
@@ -132,15 +132,15 @@ const TeachingStaff = () => {
     };
 
     return (
-      <div className="w-full relative" style={{ height: '1200px' }}>
+      <div className="w-full relative" style={{ height: '800px' }}>
         {/* Loading skeleton - only shown if iframe is actually loading */}
         {isLoading && (
           <div className="absolute inset-0 z-10">
-            <IframeSkeleton height="1200px" />
+            <IframeSkeleton height="800px" />
           </div>
         )}
         
-        {/* Embedded Google Docs calendar - loads immediately, shows all office hours schedule */}
+        {/* Embedded Google Calendar - loads immediately, shows all office hours schedule */}
         <iframe
           ref={iframeRef}
           src={OFFICE_HOURS_URL}
@@ -290,7 +290,7 @@ const TeachingStaff = () => {
           {/* Tutors Section - grid of tutor cards (only shown if tutors exist) */}
           {tutors.length > 0 && (
             <div className="mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-6 text-center">Tutors</h2>
+              <h2 className="text-4xl font-bold text-gray-900 mb-6 text-center">Undergraduate Assistants</h2>
               {/* Responsive grid - 1 column on mobile, 2 on tablet, 3 on desktop, 4 on xl screens */}
               <div className="flex flex-wrap justify-center gap-6 max-w-[1608px] mx-auto">
                 {tutors.map((tutor, index) => (
@@ -318,9 +318,23 @@ const TeachingStaff = () => {
             </div>
           )}
 
-          {/* Office Hours Calendar Section - embedded Google Docs iframe */}
+          {/* Office Hours Calendar Section - embedded Google Calendar iframe */}
           <div>
             <h2 className="text-4xl font-bold text-gray-900 mb-6 text-center">All Office Hours (Subject to change-please check regularly)</h2>
+            {/* Zoom link for online tutoring sessions */}
+            <div className="mb-6 text-center">
+              <p className="text-gray-700 text-lg">
+                All online tutoring sessions will be held via this Zoom link:{' '}
+                <a 
+                  href="https://ucsc.zoom.us/j/99455847810?pwd=mZN9RGpOogxzVXJwSaMupEvHMynVb2.1#success" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-blue-600 hover:text-blue-800 hover:underline font-medium"
+                >
+                  Tutor-Zoom-Link
+                </a>
+              </p>
+            </div>
             {/* Iframe container - fixed height for proper display */}
             <OfficeHoursCalendar />
           </div>

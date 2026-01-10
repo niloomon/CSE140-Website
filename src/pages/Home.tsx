@@ -5,33 +5,20 @@
  * Features:
  * - Interactive 3D hero section with Spline animation
  * - Spotlight hover effect
- * - Comprehensive course information sections
- * - Important links, communication channels, grading, policies, etc.
+ * - Embedded Google Doc content
  * - Responsive design for mobile and desktop
  */
 
-import React, { Suspense, lazy, useState, useEffect, useRef, useCallback } from 'react'
+import React, { Suspense, lazy, useState, useRef, useCallback, useEffect } from 'react'
 // Framer Motion imports - for animations and interactive effects
 import { motion, useSpring, useTransform, SpringOptions } from 'framer-motion'
 import { Card } from '@/components/ui/card'
-// Icon imports from lucide-react
-import { BookOpen, Link as LinkIcon, MessageSquare, GraduationCap, FileText, AlertCircle, ExternalLink, Users, Target, Shield } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { useIframePreloader } from '@/hooks/use-iframe-preloader'
+import { IframeSkeleton } from '@/components/ui/iframe-skeleton'
 // Import Canvas course data (fetched at build time)
 import canvasStaffData from '@/data/canvas-staff.json'
-// Import course content data
-import courseContentData from '@/data/course-content.json'
-// Table component imports for grading tables
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 
 // Lazy load Spline 3D library - improves initial page load performance
 const Spline = lazy(() => import('@splinetool/react-spline'))
@@ -207,11 +194,7 @@ function Interactive3D({ className }: Interactive3DProps) {
                   {canvasStaffData.course_name}
                 </h2>
                 <p className="text-sm sm:text-base text-gray-300 leading-relaxed max-w-2xl">
-                  Dive into the cutting-edge world of Artificial Intelligence! Explore machine learning, neural networks, 
-                  intelligent search algorithms, and game-playing systems. Master both symbolic and modern AI techniques 
-                  through hands-on projects—from perception and reasoning to optimization and problem-solving. Whether you're 
-                  fascinated by how machines learn, how AI systems make decisions, or how to build intelligent agents, 
-                  this course will equip you with the foundational concepts and practical skills to shape the future of AI.
+                  This course introduces the foundations of Artificial Intelligence, focusing on how intelligent agents reason, learn, and make decisions. Students will study core AI techniques including search, constraint satisfaction, probabilistic reasoning, decision-making under uncertainty, game playing, and reinforcement learning. Emphasis is placed on both theory and practical implementation through Python-based programming assignments. By the end of the course, students will be able to design, analyze, and evaluate AI systems for solving complex computational problems in dynamic environments.
                 </p>
               </div>
 
@@ -245,11 +228,7 @@ function Interactive3D({ className }: Interactive3DProps) {
                   {canvasStaffData.course_name}
                 </h2>
                 <p className="text-lg text-gray-300 leading-relaxed max-w-2xl">
-                  Dive into the cutting-edge world of Artificial Intelligence! Explore machine learning, neural networks, 
-                  intelligent search algorithms, and game-playing systems. Master both symbolic and modern AI techniques 
-                  through hands-on projects—from perception and reasoning to optimization and problem-solving. Whether you're 
-                  fascinated by how machines learn, how AI systems make decisions, or how to build intelligent agents, 
-                  this course will equip you with the foundational concepts and practical skills to shape the future of AI.
+                  This course introduces the foundations of Artificial Intelligence, focusing on how intelligent agents reason, learn, and make decisions. Students will study core AI techniques including search, constraint satisfaction, probabilistic reasoning, decision-making under uncertainty, game playing, and reinforcement learning. Emphasis is placed on both theory and practical implementation through Python-based programming assignments. By the end of the course, students will be able to design, analyze, and evaluate AI systems for solving complex computational problems in dynamic environments.
                 </p>
               </div>
 
@@ -268,464 +247,53 @@ function Interactive3D({ className }: Interactive3DProps) {
   )
 }
 
-/**
- * Helper function to get icon component based on icon name
- */
-function getIconComponent(iconName: string) {
-  const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-    BookOpen,
-    MessageSquare,
-    AlertCircle,
-    GraduationCap,
-    FileText,
-    Users,
-    Target,
-    Shield,
-  }
-  return iconMap[iconName] || BookOpen
-}
 
 /**
- * Helper function to get icon color classes
- */
-function getIconColorClasses(color: string) {
-  const colorMap: Record<string, string> = {
-    green: 'text-green-600 dark:text-green-400',
-    purple: 'text-purple-600 dark:text-purple-400',
-    orange: 'text-orange-600 dark:text-orange-400',
-    indigo: 'text-indigo-600 dark:text-indigo-400',
-    teal: 'text-teal-600 dark:text-teal-400',
-    pink: 'text-pink-600 dark:text-pink-400',
-    red: 'text-red-600 dark:text-red-400',
-    blue: 'text-blue-600 dark:text-blue-400',
-    cyan: 'text-cyan-600 dark:text-cyan-400',
-  }
-  return colorMap[color] || 'text-gray-600 dark:text-gray-400'
-}
-
-/**
- * CourseInfo Component
+ * GoogleDocEmbed Component
  * 
- * Displays comprehensive course information organized into sections:
- * - Important Links (GitHub, Ed Discussion, forms)
- * - Communication Channels
- * - QA Etiquette
- * - Course Description
- * - Grading information
- * - Learning Outcomes
- * - Assignments and Assessment
- * - Important Policies
+ * Displays a Google Doc in an embedded iframe with loading state.
+ * Matches the styling pattern used in CourseCalendar and other pages.
  */
-function CourseInfo() {
-  const data = courseContentData
+const GoogleDocEmbed = () => {
+  const GOOGLE_DOC_URL = 'https://docs.google.com/document/d/1Ppt5T9w8sUsd-aUSZ9rcst4KtCdgOcg6NuV6-tWE814/edit?tab=t.0';
+  const [isLoading, setIsLoading] = useState(true);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  // Handle iframe load event
+  const handleIframeLoad = () => {
+    setIsLoading(false);
+  };
 
   return (
-    <div className="w-full bg-gradient-to-b from-white to-gray-50 dark:from-black dark:to-gray-900 pt-8 md:pt-12 pb-4">
-      <div className="max-w-[1400px] mx-auto px-4">
-        {/* Section header */}
-        <div>
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 pt-0">
-            Course Information
-          </h2>
-          <p className="text-center text-gray-600 dark:text-gray-400 mb-2 max-w-3xl mx-auto">
-            Everything you need to know about CSE 140: Artificial Intelligence
-          </p>
-        </div>
-
-        {/* Course information cards - organized in vertical stack */}
-        <div className="w-full space-y-6">
-            {/* Important Links Section - GitHub repos, Ed Discussion, forms */}
-            <div>
-              <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6">
-                <div className="flex items-center gap-2 mb-6">
-                  <LinkIcon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">Important Links</h3>
-                </div>
-                <div className="space-y-6 text-gray-700 dark:text-gray-300">
-                  <div>
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-                      <BookOpen className="w-4 h-4" />
-                      GitHub Repositories
-                    </h4>
-                    <ul className="space-y-3 ml-6">
-                      <li>
-                        <div className="flex flex-col gap-1">
-                          <span className="font-medium text-gray-900 dark:text-white">PacMan Codebase</span>
-                          <a href="https://github.com/edulinq/pacai" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 break-all">
-                            https://github.com/edulinq/pacai <ExternalLink className="w-3 h-3 flex-shrink-0" />
-                          </a>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="flex flex-col gap-1">
-                          <span className="font-medium text-gray-900 dark:text-white">CSE 140 Assignments</span>
-                          <a href="https://github.com/ucsc-cse-140/cse140-assignments-public" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 break-all">
-                            https://github.com/ucsc-cse-140/cse140-assignments-public <ExternalLink className="w-3 h-3 flex-shrink-0" />
-                          </a>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-                      <MessageSquare className="w-4 h-4" />
-                      Discussion & Forms
-                    </h4>
-                    <ul className="space-y-3 ml-6">
-                      <li>
-                        <div className="flex flex-col gap-1">
-                          <span className="font-medium text-gray-900 dark:text-white">Ed Discussion Page</span>
-                          <a href={import.meta.env.VITE_ED_DISCUSSION_URL || 'https://edstem.org/us/courses/87555/discussion'} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 break-all">
-                            {import.meta.env.VITE_ED_DISCUSSION_URL || 'https://edstem.org/us/courses/87555/discussion'} <ExternalLink className="w-3 h-3 flex-shrink-0" />
-                          </a>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="flex flex-col gap-1">
-                          <span className="font-medium text-gray-900 dark:text-white">Programming Assignment Feedback</span>
-                          <a href={import.meta.env.VITE_PROGRAMMING_ASSIGNMENT_FEEDBACK_URL || 'https://docs.google.com/document/d/1dv4JcX2gDdzDs0zQih538W2e7_9PWSjfHXkOX-XPbpQ/edit?tab=t.0'} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 break-all">
-                            {import.meta.env.VITE_PROGRAMMING_ASSIGNMENT_FEEDBACK_URL || 'https://docs.google.com/document/d/1dv4JcX2gDdzDs0zQih538W2e7_9PWSjfHXkOX-XPbpQ/edit?tab=t.0'} <ExternalLink className="w-3 h-3 flex-shrink-0" />
-                          </a>
-                        </div>
-                      </li>
-                      <li>
-                        <span className="text-gray-700 dark:text-gray-300"><span className="font-medium text-gray-900 dark:text-white">Mid Quarter Feedback:</span> TBD</span>
-                      </li>
-                      <li>
-                        {import.meta.env.VITE_TOURNAMENT_URL ? (
-                          <div className="flex flex-col gap-1">
-                            <span className="font-medium text-gray-900 dark:text-white">Tournament</span>
-                            <a href={import.meta.env.VITE_TOURNAMENT_URL} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 break-all">
-                              {import.meta.env.VITE_TOURNAMENT_URL} <ExternalLink className="w-3 h-3 flex-shrink-0" />
-                            </a>
-                          </div>
-                        ) : (
-                          <span className="text-gray-700 dark:text-gray-300"><span className="font-medium text-gray-900 dark:text-white">Tournament:</span> TBD</span>
-                        )}
-                      </li>
-                      <li>
-                        <div className="flex flex-col gap-1">
-                          <span className="font-medium text-gray-900 dark:text-white">STUDY GROUP FORM</span>
-                          <a href={import.meta.env.VITE_STUDY_GROUP_FORM_URL || 'https://docs.google.com/spreadsheets/d/1Zp8oONdAD9V-KqNKsvSe4CbqrF9v43dFGaby9vJ1k0U/edit?gid=1671569792#gid=1671569792'} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 break-all">
-                            {import.meta.env.VITE_STUDY_GROUP_FORM_URL || 'https://docs.google.com/spreadsheets/d/1Zp8oONdAD9V-KqNKsvSe4CbqrF9v43dFGaby9vJ1k0U/edit?gid=1671569792#gid=1671569792'} <ExternalLink className="w-3 h-3 flex-shrink-0" />
-                          </a>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </Card>
+    <div className="bg-white pb-8">
+      <div className="container mx-auto px-4 py-8">
+        {/* Iframe container - fixed height for proper display */}
+        <div className="w-full relative" style={{ height: '1200px' }}>
+          {/* Loading skeleton - only shown if iframe is actually loading */}
+          {isLoading && (
+            <div className="absolute inset-0 z-10">
+              <IframeSkeleton height="1200px" text="Loading Syllabus..." />
             </div>
-
-            {/* Course Description Section - Topics, textbook, prerequisites */}
-            <div>
-              <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6">
-                <div className="flex items-center gap-2 mb-6">
-                  {React.createElement(getIconComponent(data.courseDescription.icon), { className: `w-6 h-6 ${getIconColorClasses(data.courseDescription.iconColor)}` })}
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">{data.courseDescription.title}</h3>
-                </div>
-                <div className="space-y-4 text-gray-700 dark:text-gray-300">
-                  <p>{data.courseDescription.description}</p>
-                  
-                  <div>
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">{data.courseDescription.topicsCovered.title}</h4>
-                    <p>{data.courseDescription.topicsCovered.content}</p>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">{data.courseDescription.textbook.title}</h4>
-                    <p dangerouslySetInnerHTML={{ __html: data.courseDescription.textbook.content }} />
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">{data.courseDescription.prerequisites.title}</h4>
-                    <p className="mb-2">{data.courseDescription.prerequisites.description}</p>
-                    <ul className="space-y-1 ml-6 list-disc">
-                      {data.courseDescription.prerequisites.items.map((item, index) => (
-                        <li key={index}>
-                          {item.text}
-                          <a href={item.link.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">
-                            {item.link.text}
-                          </a>
-                          {item.note}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </Card>
-            </div>
-
-            {/* Communication Channels Section - Canvas, Ed Discussion, office hours */}
-            <div>
-              <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6">
-                <div className="flex items-center gap-2 mb-6">
-                  {React.createElement(getIconComponent(data.communicationChannels.icon), { className: `w-6 h-6 ${getIconColorClasses(data.communicationChannels.iconColor)}` })}
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">{data.communicationChannels.title}</h3>
-                </div>
-                <div className="space-y-4 text-gray-700 dark:text-gray-300">
-                  <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-                    <p className="font-semibold text-blue-900 dark:text-blue-100 mb-2">{data.communicationChannels.announcementBox.title}</p>
-                    <p className="text-sm text-blue-800 dark:text-blue-200">{data.communicationChannels.announcementBox.description}</p>
-                  </div>
-                  
-                  <p>{data.communicationChannels.description}</p>
-                  
-                  <div className="mt-4">
-                    <p className="font-semibold text-gray-900 dark:text-white mb-3">{data.communicationChannels.guidelines.title}</p>
-                    <ul className="space-y-2 ml-6 list-disc">
-                      {data.communicationChannels.guidelines.items.map((item, index) => (
-                        <li key={index} dangerouslySetInnerHTML={{ __html: item.text }} />
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </Card>
-            </div>
-
-            {/* QA Etiquette Section - Guidelines for Ed Discussion usage */}
-            <div>
-              <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6">
-                <div className="flex items-center gap-2 mb-6">
-                  {React.createElement(getIconComponent(data.qaEtiquette.icon), { className: `w-6 h-6 ${getIconColorClasses(data.qaEtiquette.iconColor)}` })}
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">{data.qaEtiquette.title}</h3>
-                </div>
-                <div className="space-y-3 text-gray-700 dark:text-gray-300">
-                  <p>{data.qaEtiquette.description}</p>
-                  <ul className="space-y-2 ml-6 list-disc">
-                    {data.qaEtiquette.items.map((item, index) => (
-                      <li key={index} dangerouslySetInnerHTML={{ __html: item }} />
-                    ))}
-                  </ul>
-                </div>
-              </Card>
-            </div>
-
-            {/* Grading Section - Grade components, grade scale, policies */}
-            <div>
-              <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6">
-                <div className="flex items-center gap-2 mb-6">
-                  {React.createElement(getIconComponent(data.grading.icon), { className: `w-6 h-6 ${getIconColorClasses(data.grading.iconColor)}` })}
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">{data.grading.title}</h3>
-                </div>
-                <div className="space-y-6 text-gray-700 dark:text-gray-300">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3">{data.grading.gradeComponents.title}</h4>
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Item</TableHead>
-                            <TableHead className="text-right">Weight</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {data.grading.gradeComponents.items.map((row, index) => (
-                            <TableRow key={index} className={row.isTotal ? 'font-semibold border-t-2' : ''}>
-                              <TableCell>{row.item}</TableCell>
-                              <TableCell className="text-right">{row.weight}</TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-
-                    <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3">{data.grading.gradeScale.title}</h4>
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Grade</TableHead>
-                            <TableHead className="text-right">Percentage</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {data.grading.gradeScale.items.map((row, index) => (
-                            <TableRow key={index}>
-                              <TableCell>{row.grade}</TableCell>
-                              <TableCell className="text-right">{row.percentage}</TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </div>
-
-                  <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border border-amber-200 dark:border-amber-800">
-                    <p className="text-sm text-amber-900 dark:text-amber-100" dangerouslySetInnerHTML={{ __html: data.grading.note.text }} />
-                  </div>
-                </div>
-              </Card>
-            </div>
-
-            {/* Learning Outcomes Section - What students will learn */}
-            <div>
-              <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6">
-                <div className="flex items-center gap-2 mb-6">
-                  {React.createElement(getIconComponent(data.learningOutcomes.icon), { className: `w-6 h-6 ${getIconColorClasses(data.learningOutcomes.iconColor)}` })}
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">{data.learningOutcomes.title}</h3>
-                </div>
-                <div className="text-gray-700 dark:text-gray-300">
-                  <p className="mb-3">{data.learningOutcomes.description}</p>
-                  <ul className="space-y-2 ml-6 list-disc">
-                    {data.learningOutcomes.items.map((item, index) => (
-                      <li key={index}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              </Card>
-            </div>
-
-            {/* Class and Discussion Participation + Excused Absences Section */}
-            <div>
-              <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6">
-                <div className="flex items-center gap-2 mb-6">
-                  {React.createElement(getIconComponent(data.classParticipationAndAbsences.icon), { className: `w-6 h-6 ${getIconColorClasses(data.classParticipationAndAbsences.iconColor)}` })}
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">{data.classParticipationAndAbsences.title}</h3>
-                </div>
-                <div className="space-y-6 text-gray-700 dark:text-gray-300">
-                  {data.classParticipationAndAbsences.sections.map((section, sectionIndex) => (
-                    <div key={sectionIndex}>
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-2">{section.title}</h4>
-                      {Array.isArray(section.content) && (
-                        <>
-                          {section.content.map((paragraph, pIndex) => (
-                            <p key={pIndex} className={pIndex < section.content.length - 1 ? 'mb-2' : ''} dangerouslySetInnerHTML={{ __html: paragraph }} />
-                          ))}
-                        </>
-                      )}
-                      {typeof section.content === 'string' && (
-                        <p dangerouslySetInnerHTML={{ __html: section.content }} />
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            </div>
-
-            {/* Assignments and Assessment Section - Worksheets, quizzes, programming assignments */}
-            <div>
-              <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6">
-                <div className="flex items-center gap-2 mb-6">
-                  {React.createElement(getIconComponent(data.assignmentsAndAssessment.icon), { className: `w-6 h-6 ${getIconColorClasses(data.assignmentsAndAssessment.iconColor)}` })}
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">{data.assignmentsAndAssessment.title}</h3>
-                </div>
-                <div className="space-y-6 text-gray-700 dark:text-gray-300">
-                  {data.assignmentsAndAssessment.description && (
-                    <p className="mb-4">{data.assignmentsAndAssessment.description}</p>
-                  )}
-                  {data.assignmentsAndAssessment.sections.map((section, sectionIndex) => (
-                    <div key={sectionIndex}>
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-2">{section.title}</h4>
-                      {Array.isArray(section.content) && (
-                        <>
-                          {section.content.map((paragraph, pIndex) => (
-                            <p key={pIndex} className={pIndex < section.content.length - 1 ? 'mb-2' : ''} dangerouslySetInnerHTML={{ __html: paragraph }} />
-                          ))}
-                        </>
-                      )}
-                      {typeof section.content === 'string' && (
-                        <p dangerouslySetInnerHTML={{ __html: section.content }} />
-                      )}
-                      {section.gradingCriteria && (
-                        <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800 my-3">
-                          <p className="font-semibold text-green-900 dark:text-green-100 mb-2">{section.gradingCriteria.title}</p>
-                          {section.gradingCriteria.description && (
-                            <p className="text-sm text-green-800 dark:text-green-200 mb-2">{section.gradingCriteria.description}</p>
-                          )}
-                          <ul className="space-y-1 ml-4 list-disc text-sm text-green-800 dark:text-green-200">
-                            {section.gradingCriteria.items.map((item, itemIndex) => (
-                              <li key={itemIndex} dangerouslySetInnerHTML={{ __html: item }} />
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                      {section.latePolicy && (
-                        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-                          <p className="font-semibold text-blue-900 dark:text-blue-100 mb-2">{section.latePolicy.title}</p>
-                          {Array.isArray(section.latePolicy.content) && (
-                            <>
-                              {section.latePolicy.content.map((paragraph, pIndex) => (
-                                <p key={pIndex} className={`text-sm text-blue-800 dark:text-blue-200 ${pIndex < section.latePolicy.content.length - 1 ? 'mb-2' : ''}`} dangerouslySetInnerHTML={{ __html: paragraph }} />
-                              ))}
-                            </>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            </div>
-
-            {/* Important Policies Section - Re-grading, academic integrity, absences, support */}
-            <div>
-              <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6">
-                <div className="flex items-center gap-2 mb-6">
-                  {React.createElement(getIconComponent(data.importantPolicies.icon), { className: `w-6 h-6 ${getIconColorClasses(data.importantPolicies.iconColor)}` })}
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">{data.importantPolicies.title}</h3>
-                </div>
-                <div className="space-y-6 text-gray-700 dark:text-gray-300">
-                  {data.importantPolicies.sections.map((section, sectionIndex) => {
-                    const sectionLink = section.link;
-                    return (
-                      <div key={sectionIndex}>
-                        <h4 className="font-semibold text-gray-900 dark:text-white mb-2">{section.title}</h4>
-                        {typeof section.content === 'string' && (
-                          <p dangerouslySetInnerHTML={{ __html: section.content }} />
-                        )}
-                        {Array.isArray(section.content) && (
-                          <>
-                            {section.content.map((paragraph, pIndex) => (
-                              <p key={pIndex} className={pIndex < section.content.length - 1 ? 'mb-2' : ''} dangerouslySetInnerHTML={{ __html: paragraph }} />
-                            ))}
-                            {sectionLink && (
-                              <p className="mt-2">
-                                <a 
-                                  href={sectionLink.url} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer" 
-                                  className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"
-                                >
-                                  {sectionLink.text} <ExternalLink className="w-3 h-3" />
-                                </a>
-                              </p>
-                            )}
-                          </>
-                        )}
-                        {sectionLink && typeof section.content === 'string' && (
-                          <a 
-                            href={sectionLink.url} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1 mt-2"
-                          >
-                            {sectionLink.text} <ExternalLink className="w-3 h-3" />
-                          </a>
-                        )}
-                        {section.items && (
-                          <ul className="space-y-1 ml-6 list-disc">
-                            {section.items.map((item, itemIndex) => (
-                              <li key={itemIndex}>
-                                <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">
-                                  {item.text}
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </Card>
-            </div>
+          )}
+          
+          {/* Embedded Google Doc - loads immediately, shows course document */}
+          <iframe
+            ref={iframeRef}
+            src={GOOGLE_DOC_URL}
+            className="w-full h-full border-0 rounded-lg shadow-lg"
+            title="Course Document"
+            loading="eager"
+            onLoad={handleIframeLoad}
+            style={{ 
+              opacity: isLoading ? 0 : 1,
+              transition: 'opacity 0.3s ease-in-out'
+            }}
+          />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 /**
  * Home Component (Main Page Component)
@@ -734,7 +302,7 @@ function CourseInfo() {
  * It combines:
  * - Navigation bar
  * - Interactive 3D hero section
- * - Course information sections
+ * - Google Doc embedded content
  * - Footer
  * - Preloads Google Docs calendars in the background
  */
@@ -750,8 +318,8 @@ const Home = () => {
       {/* Interactive 3D hero section with welcome message */}
       <Interactive3D />
       
-      {/* Course information - all course details and policies */}
-      <CourseInfo />
+      {/* Google Doc embedded content */}
+      <GoogleDocEmbed />
       
       {/* Footer */}
       <Footer />
