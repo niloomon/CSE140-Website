@@ -1,47 +1,47 @@
 {
-  "course_name": "Artificial Intelligence-F25",
+  "course_name": "Artificial Intelligence",
   "instructors": [
     {
       "name": "Niloofar Montazeri",
-      "email": "",
+      "email": "nimontaz@ucsc.edu",
       "id": "105080"
     }
   ],
   "tas": [
     {
-      "name": "Soren Larsen",
-      "email": "",
-      "id": "44548",
-      "sections": ""
-    },
-    {
       "name": "Batuhan Salih",
-      "email": "",
+      "email": "basalih@ucsc.edu",
       "id": "45433",
       "sections": ""
     },
     {
-      "name": "Mude Hui",
-      "email": "",
-      "id": "96562",
+      "name": "Priyesh Vakharia",
+      "email": "pvakhari@ucsc.edu",
+      "id": "87825",
+      "sections": ""
+    },
+    {
+      "name": "Philip Bizimis",
+      "email": "pbizimis@ucsc.edu",
+      "id": "112680",
       "sections": ""
     }
   ],
   "tutors": [
     {
-      "name": "Vishwa Vijayasankar",
-      "email": "",
-      "id": "83264"
+      "name": "Akhilesh Nidamanuri",
+      "email": "snidaman@ucsc.edu",
+      "id": "83175"
+    },
+    {
+      "name": "Vaishnavi Jaligama",
+      "email": "vjaligam@ucsc.edu",
+      "id": "84006"
     },
     {
       "name": "Bhagavan Carollo",
-      "email": "",
+      "email": "fcarollo@ucsc.edu",
       "id": "85264"
-    },
-    {
-      "name": "Isaac To",
-      "email": "",
-      "id": "85370"
     },
     {
       "name": "Rajat Maheshwari",
@@ -50,43 +50,68 @@
     },
     {
       "name": "Catie Bronte",
-      "email": "",
+      "email": "cebronte@ucsc.edu",
       "id": "86866"
     },
     {
-      "name": "Trisha Moorkoth",
-      "email": "",
-      "id": "86961"
+      "name": "Adan Shafei",
+      "email": "ashafei@ucsc.edu",
+      "id": "87377"
     },
     {
-      "name": "Dhruv Shukla",
-      "email": "dhshukla@ucsc.edu",
-      "id": "87235"
+      "name": "Jacob Wei",
+      "email": "jhwei@ucsc.edu",
+      "id": "95188"
     },
     {
-      "name": "Ashwin Nagarajan",
-      "email": "",
-      "id": "99083"
+      "name": "John Dy",
+      "email": "jidy@ucsc.edu",
+      "id": "96135"
+    },
+    {
+      "name": "Aditya Patil",
+      "email": "apatil7@ucsc.edu",
+      "id": "98334"
+    },
+    {
+      "name": "Jacob Poschl",
+      "email": "jposchl@ucsc.edu",
+      "id": "99363"
+    },
+    {
+      "name": "Arpana Koilada",
+      "email": "akoilada@ucsc.edu",
+      "id": "99509"
     },
     {
       "name": "Evan Nguyen",
-      "email": "",
+      "email": "evbnguye@ucsc.edu",
       "id": "100051"
     },
     {
-      "name": "Tejas Polu",
-      "email": "",
-      "id": "100081"
-    },
-    {
-      "name": "Raymon Sadhra",
-      "email": "",
-      "id": "103679"
+      "name": "Brighton Alcantara",
+      "email": "brcalcan@ucsc.edu",
+      "id": "103740"
     },
     {
       "name": "Aditya Sarin",
-      "email": "",
+      "email": "adsarin@ucsc.edu",
       "id": "112326"
+    },
+    {
+      "name": "Daniel Ward",
+      "email": "damward@ucsc.edu",
+      "id": "112711"
+    },
+    {
+      "name": "Kevin Chan",
+      "email": "kchan94@ucsc.edu",
+      "id": "113781"
+    },
+    {
+      "name": "Reva Agarwal",
+      "email": "reagarwa@ucsc.edu",
+      "id": "116230"
     }
   ]
 }

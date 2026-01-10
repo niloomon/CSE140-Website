@@ -53,7 +53,7 @@
     },
     "description": "Ed Discussion will be used mainly for Q&A.",
     "guidelines": {
-      "title": "This a very large class. In order to get a response in a reasonable time, please use the communication channels below based on the specific issue you need to resolve:",
+      "title": "This is a very large class. In order to get a response in a reasonable time, please use the communication channels below based on the specific issue you need to resolve:",
       "items": [
         {
           "text": "<strong>Lecture slides/book questions</strong> → Ed Discussion, Instructor and TA office hours"
@@ -231,10 +231,8 @@
       {
         "title": "Quizzes",
         "content": [
-          "The goal of this course is to prepare you for research or a professional career in Artificial Intelligence. With that in mind, the quizzes are excellent preparation for internship, grad school, and job interviews. There will be (approximately) biweekly quizzes, covering two modules at a time, and a final exam (no midterm). Quizzes will be in class, in the <strong>FIRST</strong> half of the lecture in person.",
-          "The quizzes are closed notes (No phones or laptops), and you are encouraged to use pencil and paper for scratch paper. No communication or collaboration is allowed on quizzes or exams. If you have any questions about what is acceptable and what is not, please ask.",
-          "<strong>No Cheat Sheets are allowed. We will be giving the same cheat sheet with the exam to everyone during the quiz / final exam. The cheat sheets are available in the Course Material page (No need to print them).</strong>",
-          "There will be no makeup quizzes, but your lowest quiz score will be dropped."
+          "The goal of this course is to prepare you for research or a professional career in Artificial Intelligence. With that in mind, the quizzes are excellent preparation for internship, grad school, and job interviews. There will be (approximately) biweekly quizzes, covering two modules at a time, and a final exam (no midterm). Quizzes will be in class, in the <strong>FIRST</strong> half of the lecture in person. The quizzes are <strong>closed book and closed notes</strong>. We will provide the necessary formulas for solving problems so you don't have to memorize them (e.g., Q-learning formulas, steps for converting a KB to CNF, etc). No communication or collaboration is allowed on quizzes or exams. If you have any questions about what is acceptable and what is not, please ask.",
+          "<strong>There will be no makeup quizzes, but your lowest quiz score will be dropped.</strong>"
         ]
       },
       {
@@ -271,7 +269,7 @@
     "sections": [
       {
         "title": "Re-Grading Issues",
-        "content": "The majority of the grading will be done by the TAs. If you think there has been a mistake in grading your homework or exam, please submit a regrade request explaining in writing, precisely and concisely, the grading error that has occurred, to the TA. Such request must be made <strong>no later than 1 week</strong> after the material in question was returned to the class. Any request to have an assignment regraded may result in the entire assignment in question being regraded, possibly resulting in a loss of points."
+        "content": "The majority of the grading will be done by the TAs. If you think there has been a mistake in grading your homework or exam, please submit a regrade request explaining in writing, precisely and concisely, the grading error that has occurred, to the TA. Such a request must be made <strong>no later than 1 week</strong> after the material in question was returned to the class. Any request to have an assignment regraded may result in the entire assignment in question being regraded, possibly resulting in a loss of points."
       },
       {
         "title": "Academic Integrity",

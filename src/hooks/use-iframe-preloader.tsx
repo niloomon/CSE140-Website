@@ -1,7 +1,7 @@
 /**
- * use-iframe-preloader.tsx - Custom Hook for Preloading Google Docs Iframes
+ * use-iframe-preloader.tsx - Custom Hook for Preloading Google Calendar and Docs Iframes
  * 
- * This hook preloads Google Docs iframes in the background to improve
+ * This hook preloads Google Calendar and Docs iframes in the background to improve
  * perceived performance when users navigate to pages with embedded calendars.
  * 
  * Features:
@@ -14,11 +14,11 @@
 import { useEffect, useState, useRef } from 'react';
 
 /**
- * Google Docs URLs to preload
+ * Google Calendar and Docs URLs to preload
  * These can be overridden via environment variables in .env.local
  */
 export const CALENDAR_URL = import.meta.env.VITE_CALENDAR_URL || 'https://docs.google.com/document/d/1L1iCRayCBm1d1k2B9QrTdymtCrEicXc2li1hXPdKYL0/edit?tab=t.0';
-export const OFFICE_HOURS_URL = import.meta.env.VITE_OFFICE_HOURS_URL || 'https://docs.google.com/document/d/1qlxvJ-XVo97HnBuxywVqQFlHlZlN4aj01F6ecovUPvM/edit?tab=t.0';
+export const OFFICE_HOURS_URL = import.meta.env.VITE_OFFICE_HOURS_URL || 'https://calendar.google.com/calendar/embed?src=c_61f3b1526b58a03cc01e9d701e4a651ca641109aec169c30dc8840a2fa08f603%40group.calendar.google.com&ctz=America%2FLos_Angeles&mode=WEEK';
 
 /**
  * Global state to track iframe load status
@@ -72,7 +72,7 @@ export const isIframeLoaded = (url: string): boolean => {
 };
 
 /**
- * Preloads Google Docs iframes in hidden containers
+ * Preloads Google Calendar and Docs iframes in hidden containers
  * This allows the browser to cache the content before the user navigates to the page
  */
 export const useIframePreloader = () => {
@@ -116,7 +116,7 @@ export const useIframePreloader = () => {
     const officeHoursIframe = document.createElement('iframe');
     officeHoursIframe.src = OFFICE_HOURS_URL;
     officeHoursIframe.style.width = '1200px';
-    officeHoursIframe.style.height = '1200px';
+    officeHoursIframe.style.height = '800px';
     officeHoursIframe.style.border = 'none';
     officeHoursIframe.loading = 'eager';
     officeHoursIframe.setAttribute('aria-hidden', 'true');
@@ -151,7 +151,7 @@ export const useIframePreloader = () => {
 };
 
 /**
- * Preloads a specific Google Docs URL
+ * Preloads a specific Google Calendar or Docs URL
  * Can be used for individual iframe preloading
  */
 export const preloadIframe = (url: string): Promise<void> => {
@@ -161,7 +161,8 @@ export const preloadIframe = (url: string): Promise<void> => {
     iframe.style.position = 'absolute';
     iframe.style.left = '-9999px';
     iframe.style.width = '1200px';
-    iframe.style.height = '1200px';
+    // Use appropriate height based on URL
+    iframe.style.height = url === OFFICE_HOURS_URL ? '800px' : '1200px';
     iframe.style.border = 'none';
     iframe.style.opacity = '0';
     iframe.loading = 'eager';
