@@ -46,24 +46,32 @@ const App = () => {
   // Get base URL - use build-time value, but allow runtime detection for GitHub Pages
   let routerBase = import.meta.env.BASE_URL ?? "/";
   
-  // Runtime detection: if we're on GitHub Pages and the pathname suggests a different base
+  // Runtime detection: Always try to detect the correct base path from the URL
   if (typeof window !== 'undefined') {
     const pathname = window.location.pathname;
     const buildBase = routerBase;
-    
-    // If pathname starts with something that looks like a repo name (not our routes)
     const knownRoutes = ['course-calendar', 'teaching-staff', 'course-material', 'projects'];
-    const firstSegment = pathname.split('/').filter(Boolean)[0];
     
-    // If first segment exists and is not a known route, it might be the repo name
+    // Extract path segments
+    const segments = pathname.split('/').filter(Boolean);
+    const firstSegment = segments[0];
+    
+    // Strategy 1: If pathname starts with a segment that's not a known route, it's likely the repo name
     if (firstSegment && !knownRoutes.includes(firstSegment)) {
-      // Check if pathname starts with a potential repo name
-      const potentialBase = `/${firstSegment}/`;
-      // If the build base doesn't match and we're clearly in a subdirectory
-      if (buildBase === "/" && pathname.startsWith(potentialBase)) {
-        routerBase = potentialBase;
-        console.warn(`Detected base path mismatch. Build-time: ${buildBase}, Runtime: ${routerBase}`);
+      const detectedBase = `/${firstSegment}/`;
+      // Use detected base if:
+      // - Build base is "/" (root) but we're clearly in a subdirectory, OR
+      // - The detected base matches what we expect from the build
+      if (buildBase === "/" || pathname.startsWith(detectedBase)) {
+        routerBase = detectedBase;
+        console.log(`Detected base path from URL: ${detectedBase}`);
       }
+    }
+    
+    // Strategy 2: If we're at root but build expects a base, check if we should use root
+    if (pathname === "/" || pathname === "/index.html") {
+      // If we're at root but build has a base, we might be on a user page
+      // Keep the build base in this case
     }
     
     // Ensure base ends with / if not root
@@ -74,9 +82,10 @@ const App = () => {
     // Debug logging
     console.log('=== App Initialization ===');
     console.log('Build-time BASE_URL:', buildBase);
-    console.log('Final router basename:', routerBase);
+    console.log('Detected router basename:', routerBase);
     console.log('Current pathname:', pathname);
     console.log('Current URL:', window.location.href);
+    console.log('Path segments:', segments);
   } else {
     // Server-side: ensure base ends with /
     if (routerBase !== "/" && !routerBase.endsWith("/")) {
@@ -130,13 +139,28 @@ const App = () => {
               {/* Projects page - Course programming assignments */}
               <Route path="/projects" element={<Projects />} />
               
-              {/* Catch-all route for debugging */}
+              {/* Catch-all route for debugging - shows what route matched */}
               <Route path="*" element={
-                <div style={{ padding: '20px', textAlign: 'center' }}>
-                  <h1>Route not found</h1>
-                  <p>Pathname: {typeof window !== 'undefined' ? window.location.pathname : 'N/A'}</p>
-                  <p>Basename: {routerBase}</p>
-                  <p><a href={routerBase === "/" ? "/" : routerBase}>Go to Home</a></p>
+                <div style={{ 
+                  padding: '40px', 
+                  textAlign: 'center',
+                  background: 'white',
+                  minHeight: '100vh',
+                  color: 'black'
+                }}>
+                  <h1 style={{ color: 'red', fontSize: '24px', marginBottom: '20px' }}>
+                    ⚠️ Route Not Found
+                  </h1>
+                  <div style={{ textAlign: 'left', maxWidth: '600px', margin: '0 auto', background: '#f5f5f5', padding: '20px', borderRadius: '8px' }}>
+                    <p><strong>Current Pathname:</strong> {typeof window !== 'undefined' ? window.location.pathname : 'N/A'}</p>
+                    <p><strong>Router Basename:</strong> {routerBase}</p>
+                    <p><strong>Full URL:</strong> {typeof window !== 'undefined' ? window.location.href : 'N/A'}</p>
+                    <p><strong>Build-time BASE_URL:</strong> {import.meta.env.BASE_URL || 'Not set'}</p>
+                    <hr style={{ margin: '20px 0' }} />
+                    <p><a href={routerBase === "/" ? "/" : routerBase} style={{ color: 'blue', textDecoration: 'underline' }}>
+                      → Go to Home ({routerBase === "/" ? "/" : routerBase})
+                    </a></p>
+                  </div>
                 </div>
               } />
             </Routes>
