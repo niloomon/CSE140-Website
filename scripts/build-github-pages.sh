@@ -11,10 +11,8 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$PROJECT_ROOT"
 
 # Determine repository name
-REPO_NAME="${1:-CSE-140-Website}"
-
-# Special case: if repo name is "USER_PAGES" or empty, use root path
-if [ -z "$1" ] || [ "$1" = "USER_PAGES" ] || [ "$1" = "user.github.io" ]; then
+# If no argument provided, try to detect from git
+if [ -z "$1" ]; then
   # Try to detect from git if not provided
   if command -v git &> /dev/null; then
     GIT_REMOTE=$(git remote get-url origin 2>/dev/null || echo "")
@@ -26,18 +24,19 @@ if [ -z "$1" ] || [ "$1" = "USER_PAGES" ] || [ "$1" = "user.github.io" ]; then
         REPO_NAME=""
         BASE_PATH="/"
       else
-        REPO_NAME="${DETECTED_NAME:-CSE-140-Website}"
+        REPO_NAME="$DETECTED_NAME"
         BASE_PATH="/$REPO_NAME/"
       fi
     else
-      REPO_NAME="CSE-140-Website"
+      REPO_NAME="CSE140-Website"
       BASE_PATH="/$REPO_NAME/"
     fi
   else
-    REPO_NAME="CSE-140-Website"
+    REPO_NAME="CSE140-Website"
     BASE_PATH="/$REPO_NAME/"
   fi
 else
+  REPO_NAME="$1"
   # Check if it's a user page
   if [[ "$REPO_NAME" == *.github.io ]] || [ "$REPO_NAME" = "USER_PAGES" ]; then
     BASE_PATH="/"

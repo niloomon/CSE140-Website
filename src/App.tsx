@@ -43,7 +43,11 @@ const queryClient = new QueryClient();
  * - "/projects" - Course projects page
  */
 const App = () => {
-  const routerBase = import.meta.env.BASE_URL ?? "/";
+  // Get base URL and ensure it ends with / if not root
+  let routerBase = import.meta.env.BASE_URL ?? "/";
+  if (routerBase !== "/" && !routerBase.endsWith("/")) {
+    routerBase = routerBase + "/";
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
