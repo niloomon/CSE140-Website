@@ -84,6 +84,25 @@ else
 fi
 
 echo ""
+echo "=== Creating .nojekyll file ==="
+# Create .nojekyll to prevent GitHub Pages from processing with Jekyll
+touch "$PROJECT_ROOT/dist/.nojekyll"
+echo "Created .nojekyll file"
+
+echo ""
+echo "=== Verifying base path in built files ==="
+# Check if the base path was applied correctly
+if [ -f "$PROJECT_ROOT/dist/index.html" ]; then
+  if grep -q "$BASE_PATH" "$PROJECT_ROOT/dist/index.html" 2>/dev/null || [ "$BASE_PATH" = "/" ]; then
+    echo "✓ Base path appears to be set correctly"
+  else
+    echo "⚠ WARNING: Base path may not be applied correctly in index.html"
+    echo "  Expected base path: $BASE_PATH"
+    echo "  Check dist/index.html to verify asset paths"
+  fi
+fi
+
+echo ""
 echo "=== Build Complete ==="
 echo "The dist/ folder is ready for GitHub Pages deployment"
 echo "Repository: $REPO_NAME"

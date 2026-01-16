@@ -25,6 +25,11 @@ export default defineConfig(({ mode }) => {
     base = base + "/";
   }
 
+  // Log the base path for debugging
+  if (mode === "production") {
+    console.log(`Building with base path: ${base}`);
+  }
+
   return {
     base,
     server: {
