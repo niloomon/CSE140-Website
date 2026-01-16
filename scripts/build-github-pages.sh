@@ -11,35 +11,34 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$PROJECT_ROOT"
 
 # Determine repository name
-REPO_NAME="${1:-CSE-140-Website}"
-
-# Special case: if repo name is "USER_PAGES" or empty, use root path
-if [ -z "$1" ] || [ "$1" = "USER_PAGES" ] || [ "$1" = "user.github.io" ]; then
-  # Try to detect from git if not provided
+# Try to detect from git first if not provided as argument
+if [ -z "$1" ]; then
   if command -v git &> /dev/null; then
     GIT_REMOTE=$(git remote get-url origin 2>/dev/null || echo "")
     if [ -n "$GIT_REMOTE" ]; then
       # Extract repo name from git remote URL
       DETECTED_NAME=$(basename -s .git "$GIT_REMOTE" 2>/dev/null || echo "")
-      # Check if it's a user page (ends with .github.io)
-      if [[ "$DETECTED_NAME" == *.github.io ]]; then
-        REPO_NAME=""
-        BASE_PATH="/"
+      if [ -n "$DETECTED_NAME" ]; then
+        REPO_NAME="$DETECTED_NAME"
       else
-        REPO_NAME="${DETECTED_NAME:-CSE-140-Website}"
-        BASE_PATH="/$REPO_NAME/"
+        REPO_NAME="CSE140-Website"
       fi
     else
-      REPO_NAME="CSE-140-Website"
-      BASE_PATH="/$REPO_NAME/"
+      REPO_NAME="CSE140-Website"
     fi
   else
-    REPO_NAME="CSE-140-Website"
-    BASE_PATH="/$REPO_NAME/"
+    REPO_NAME="CSE140-Website"
   fi
 else
-  # Check if it's a user page
-  if [[ "$REPO_NAME" == *.github.io ]] || [ "$REPO_NAME" = "USER_PAGES" ]; then
+  REPO_NAME="$1"
+fi
+
+# Special case: if repo name is "USER_PAGES" or empty, use root path
+if [ -z "$REPO_NAME" ] || [ "$REPO_NAME" = "USER_PAGES" ] || [ "$REPO_NAME" = "user.github.io" ]; then
+  BASE_PATH="/"
+else
+  # Check if it's a user page (ends with .github.io)
+  if [[ "$REPO_NAME" == *.github.io ]]; then
     BASE_PATH="/"
   else
     BASE_PATH="/$REPO_NAME/"
@@ -72,6 +71,28 @@ fi
 echo ""
 echo "=== Building Site ==="
 npm run build:only
+
+echo ""
+echo "=== Fixing asset paths in HTML ==="
+# Fix asset paths in HTML files to include base path (safety net)
+if [ -f "$PROJECT_ROOT/dist/index.html" ] && [ "$BASE_PATH" != "/" ]; then
+  # Use a more reliable method to fix paths
+  # Replace /assets/ with BASE_PATH/assets/ in src and href attributes
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS sed requires backup extension
+    sed -i '' "s|\(src\|href\)=[\"']/assets/|\\1=\"$BASE_PATH/assets/|g" "$PROJECT_ROOT/dist/index.html"
+  else
+    # Linux sed
+    sed -i "s|\(src\|href\)=[\"']/assets/|\\1=\"$BASE_PATH/assets/|g" "$PROJECT_ROOT/dist/index.html"
+  fi
+  echo "Fixed asset paths in index.html"
+else
+  if [ "$BASE_PATH" = "/" ]; then
+    echo "Base path is root, no path transformation needed"
+  else
+    echo "WARNING: index.html not found, cannot fix asset paths"
+  fi
+fi
 
 echo ""
 echo "=== Setting up 404.html for SPA routing ==="

@@ -41,35 +41,43 @@ export default defineConfig(({ mode }) => {
         return {
           name: "html-transform-base-path",
           enforce: "post", // Run after other plugins to ensure we catch all paths
-          transformIndexHtml(html) {
-            // If base is root, no transformation needed
-            if (basePath === "/") {
-              return html;
-            }
-            
-            // Transform all absolute asset paths to include base path
-            // This handles: script src, link href (stylesheets, favicon), etc.
-            return html.replace(
-              /(src|href)=["'](\/[^"']+)["']/g,
-              (match, attr, path) => {
-                // Skip external URLs (http/https)
-                if (path.startsWith("http://") || path.startsWith("https://")) {
-                  return match;
-                }
-                // Skip data URIs and mailto
-                if (path.startsWith("data:") || path.startsWith("mailto:")) {
-                  return match;
-                }
-                // Skip if path already includes the base path
-                if (path.startsWith(basePath)) {
-                  return match;
-                }
-                // Transform absolute paths to include base
-                // Remove leading slash and prepend base path
-                const newPath = basePath + path.slice(1);
-                return `${attr}="${newPath}"`;
+          transformIndexHtml: {
+            order: "post", // Run after Vite's default HTML transformations
+            handler(html) {
+              // If base is root, no transformation needed
+              if (basePath === "/") {
+                return html;
               }
-            );
+              
+              console.log(`[html-transform-base-path] Transforming HTML with base path: ${basePath}`);
+              
+              // Transform all absolute asset paths to include base path
+              // This handles: script src, link href (stylesheets, favicon), etc.
+              let transformed = html.replace(
+                /(src|href)=["'](\/[^"']+)["']/g,
+                (match, attr, path) => {
+                  // Skip external URLs (http/https)
+                  if (path.startsWith("http://") || path.startsWith("https://")) {
+                    return match;
+                  }
+                  // Skip data URIs and mailto
+                  if (path.startsWith("data:") || path.startsWith("mailto:")) {
+                    return match;
+                  }
+                  // Skip if path already includes the base path
+                  if (path.startsWith(basePath)) {
+                    return match;
+                  }
+                  // Transform absolute paths to include base
+                  // Remove leading slash and prepend base path
+                  const newPath = basePath + path.slice(1);
+                  console.log(`[html-transform-base-path] Transforming ${path} -> ${newPath}`);
+                  return `${attr}="${newPath}"`;
+                }
+              );
+              
+              return transformed;
+            },
           },
         };
       })(),
