@@ -39,7 +39,7 @@ export function HeroSection04() {
           {/* Static Image - positioned from start */}
           <div className="absolute hidden md:flex left-1/2 -top-10 w-fit bg-white dark:bg-black border border-gray-300 dark:border-gray-700 z-10">
             <img
-              src={`${import.meta.env.BASE_URL}Rajat.JPG`}
+              src="/Rajat.JPG"
               alt="Rajat Maheshwari portrait"
               className="h-96 w-80 object-cover grayscale"
             />
@@ -51,7 +51,7 @@ export function HeroSection04() {
           {/* Mobile Image - positioned from start */}
           <div className="flex md:hidden left-1/2 -top-10 w-full md:w-fit bg-white dark:bg-black border border-gray-300 dark:border-gray-700 z-10">
             <img
-              src={`${import.meta.env.BASE_URL}Rajat.JPG`}
+              src="/Rajat.JPG"
               alt="Rajat Maheshwari portrait"
               className="h-96 w-80 object-cover grayscale"
             />

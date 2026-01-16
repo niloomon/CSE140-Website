@@ -25,12 +25,6 @@ export default defineConfig(({ mode }) => {
     base = base + "/";
   }
 
-  // Log the base path for debugging
-  if (mode === "production") {
-    console.log(`Building with base path: ${base}`);
-    console.log(`VITE_BASE_PATH env: ${process.env.VITE_BASE_PATH}`);
-  }
-
   return {
     base,
     server: {
