@@ -84,10 +84,28 @@ const App = () => {
     }
   }
 
+  // Add a visible test element to verify React is rendering
+  const testElement = (
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      background: 'red',
+      color: 'white',
+      padding: '10px',
+      zIndex: 99999,
+      fontSize: '12px'
+    }}>
+      React is rendering! Base: {routerBase} | Path: {typeof window !== 'undefined' ? window.location.pathname : 'N/A'}
+    </div>
+  );
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} forcedTheme="light">
         <TooltipProvider>
+          {testElement}
           {/* Toast notification components for user feedback */}
           <Toaster />
           <Sonner />
@@ -111,6 +129,16 @@ const App = () => {
               
               {/* Projects page - Course programming assignments */}
               <Route path="/projects" element={<Projects />} />
+              
+              {/* Catch-all route for debugging */}
+              <Route path="*" element={
+                <div style={{ padding: '20px', textAlign: 'center' }}>
+                  <h1>Route not found</h1>
+                  <p>Pathname: {typeof window !== 'undefined' ? window.location.pathname : 'N/A'}</p>
+                  <p>Basename: {routerBase}</p>
+                  <p><a href={routerBase === "/" ? "/" : routerBase}>Go to Home</a></p>
+                </div>
+              } />
             </Routes>
           </BrowserRouter>
         </TooltipProvider>
