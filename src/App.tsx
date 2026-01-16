@@ -43,10 +43,45 @@ const queryClient = new QueryClient();
  * - "/projects" - Course projects page
  */
 const App = () => {
-  // Get base URL and ensure it ends with / if not root
+  // Get base URL - use build-time value, but allow runtime detection for GitHub Pages
   let routerBase = import.meta.env.BASE_URL ?? "/";
-  if (routerBase !== "/" && !routerBase.endsWith("/")) {
-    routerBase = routerBase + "/";
+  
+  // Runtime detection: if we're on GitHub Pages and the pathname suggests a different base
+  if (typeof window !== 'undefined') {
+    const pathname = window.location.pathname;
+    const buildBase = routerBase;
+    
+    // If pathname starts with something that looks like a repo name (not our routes)
+    const knownRoutes = ['course-calendar', 'teaching-staff', 'course-material', 'projects'];
+    const firstSegment = pathname.split('/').filter(Boolean)[0];
+    
+    // If first segment exists and is not a known route, it might be the repo name
+    if (firstSegment && !knownRoutes.includes(firstSegment)) {
+      // Check if pathname starts with a potential repo name
+      const potentialBase = `/${firstSegment}/`;
+      // If the build base doesn't match and we're clearly in a subdirectory
+      if (buildBase === "/" && pathname.startsWith(potentialBase)) {
+        routerBase = potentialBase;
+        console.warn(`Detected base path mismatch. Build-time: ${buildBase}, Runtime: ${routerBase}`);
+      }
+    }
+    
+    // Ensure base ends with / if not root
+    if (routerBase !== "/" && !routerBase.endsWith("/")) {
+      routerBase = routerBase + "/";
+    }
+    
+    // Debug logging
+    console.log('=== App Initialization ===');
+    console.log('Build-time BASE_URL:', buildBase);
+    console.log('Final router basename:', routerBase);
+    console.log('Current pathname:', pathname);
+    console.log('Current URL:', window.location.href);
+  } else {
+    // Server-side: ensure base ends with /
+    if (routerBase !== "/" && !routerBase.endsWith("/")) {
+      routerBase = routerBase + "/";
+    }
   }
 
   return (
