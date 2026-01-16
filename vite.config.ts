@@ -34,28 +34,40 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       mode === "development" && componentTagger(),
-      // Plugin to transform HTML and fix favicon path for GitHub Pages
+      // Plugin to transform HTML and fix all asset paths for GitHub Pages
+      // This ensures paths work correctly even if Vite's base path transformation doesn't apply
       (() => {
         const basePath = base;
         return {
-          name: "html-transform",
+          name: "html-transform-base-path",
+          enforce: "post", // Run after other plugins to ensure we catch all paths
           transformIndexHtml(html) {
-            // Transform favicon path to respect base URL
+            // If base is root, no transformation needed
+            if (basePath === "/") {
+              return html;
+            }
+            
+            // Transform all absolute asset paths to include base path
+            // This handles: script src, link href (stylesheets, favicon), etc.
             return html.replace(
-              /(href=["'])([^"']*ucsc\.png)(["'])/g,
-              (match, prefix, path, suffix) => {
-                // If base is root, no transformation needed
-                if (basePath === "/") {
+              /(src|href)=["'](\/[^"']+)["']/g,
+              (match, attr, path) => {
+                // Skip external URLs (http/https)
+                if (path.startsWith("http://") || path.startsWith("https://")) {
                   return match;
                 }
-                // If path is absolute root path, prepend base
-                if (path === "/ucsc.png" || path === "ucsc.png") {
-                  const newPath = path.startsWith("/") 
-                    ? basePath + path.slice(1)
-                    : basePath + path;
-                  return prefix + newPath + suffix;
+                // Skip data URIs and mailto
+                if (path.startsWith("data:") || path.startsWith("mailto:")) {
+                  return match;
                 }
-                return match;
+                // Skip if path already includes the base path
+                if (path.startsWith(basePath)) {
+                  return match;
+                }
+                // Transform absolute paths to include base
+                // Remove leading slash and prepend base path
+                const newPath = basePath + path.slice(1);
+                return `${attr}="${newPath}"`;
               }
             );
           },
