@@ -34,6 +34,33 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       mode === "development" && componentTagger(),
+      // Plugin to transform HTML and fix favicon path for GitHub Pages
+      (() => {
+        const basePath = base;
+        return {
+          name: "html-transform",
+          transformIndexHtml(html) {
+            // Transform favicon path to respect base URL
+            return html.replace(
+              /(href=["'])([^"']*ucsc\.png)(["'])/g,
+              (match, prefix, path, suffix) => {
+                // If base is root, no transformation needed
+                if (basePath === "/") {
+                  return match;
+                }
+                // If path is absolute root path, prepend base
+                if (path === "/ucsc.png" || path === "ucsc.png") {
+                  const newPath = path.startsWith("/") 
+                    ? basePath + path.slice(1)
+                    : basePath + path;
+                  return prefix + newPath + suffix;
+                }
+                return match;
+              }
+            );
+          },
+        };
+      })(),
     ].filter(Boolean),
     resolve: {
       alias: {
