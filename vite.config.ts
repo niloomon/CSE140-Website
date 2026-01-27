@@ -27,6 +27,19 @@ export default defineConfig(({ mode }) => {
 
   return {
     base,
+    build: {
+      // Ensure all assets are placed correctly
+      assetsDir: 'assets',
+      // Ensure chunk filenames are deterministic
+      rollupOptions: {
+        output: {
+          // Ensure all chunks use the base path
+          assetFileNames: 'assets/[name]-[hash][extname]',
+          chunkFileNames: 'assets/[name]-[hash].js',
+          entryFileNames: 'assets/[name]-[hash].js',
+        },
+      },
+    },
     server: {
       host: "::",
       port: 8080,
