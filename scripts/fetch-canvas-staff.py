@@ -127,6 +127,44 @@ def fetch_course_staff(config):
     for role_key, count in sorted(user_roles_summary.items()):
         print(f"    - {role_key}: {count}")
     
+    def fetch_user_email(canvas_user_id: str, user_name: str) -> str:
+        """Fetch email via Canvas API. canvas_user_id is used only for the API call and is never stored."""
+        if not HAS_REQUESTS:
+            return ''
+        try:
+            server_url = backend.server
+            if not server_url.startswith('http'):
+                server_url = 'https://' + server_url
+            url = f"{server_url}/api/v1/users/{canvas_user_id}"
+            headers = backend.get_standard_headers()
+            response = requests.get(url, headers=headers, timeout=3)
+            if response.status_code == 200:
+                user_data = response.json()
+                email = (
+                    user_data.get('email') or
+                    user_data.get('login_id') or
+                    user_data.get('primary_email') or
+                    ''
+                )
+                if email:
+                    return email
+            if response.status_code != 403:
+                url = f"{server_url}/api/v1/users/{canvas_user_id}/profile"
+                response = requests.get(url, headers=headers, timeout=3)
+                if response.status_code == 200:
+                    profile_data = response.json()
+                    email = (
+                        profile_data.get('email') or
+                        profile_data.get('login_id') or
+                        profile_data.get('primary_email') or
+                        ''
+                    )
+                    if email:
+                        return email
+        except (requests.exceptions.Timeout, requests.exceptions.RequestException, Exception):
+            pass
+        return ''
+    
     # Organize users by role and email (no Canvas IDs stored)
     instructors = []
     tas = []
@@ -204,12 +242,48 @@ def fetch_course_staff(config):
     # Combine all staff users in order for email fetching: instructor, TAs, tutors/readers
     staff_users = instructor_users + ta_users + tutor_users
     
-    # Second pass: we intentionally do NOT fetch additional emails via Canvas user IDs.
-    # This keeps the script from handling any persistent user identifiers beyond names/emails
-    # already provided by lms-toolkit.
-    if staff_users:
-        print("Skipping additional email fetching (no Canvas user IDs are used).")
-    
+    # Second pass: fetch missing emails via Canvas API (ID used only in memory for the request, never stored)
+    if staff_users and HAS_REQUESTS:
+        staff_needing_emails = [(u, rt) for u, rt in staff_users if not (u.email or '').strip()]
+        if staff_needing_emails:
+            print(f"Fetching email addresses for {len(staff_needing_emails)} staff members...")
+            if os.getenv('SKIP_EMAIL_FETCH') == '1':
+                print("Skipping email fetch (SKIP_EMAIL_FETCH=1)")
+            else:
+                for idx, (user, role_type) in enumerate(staff_needing_emails, 1):
+                    print(f"  [{idx}/{len(staff_needing_emails)}] {user.name}...", end=' ', flush=True)
+                    try:
+                        email = fetch_user_email(user.id, user.name)
+                        if email:
+                            print(f"✓ {email}")
+                            match_name = (user.name or 'Unknown').lower().strip()
+                            if role_type == 'instructor':
+                                for entry in instructors:
+                                    if entry.get('name', '').lower().strip() == match_name:
+                                        entry['email'] = email
+                                        break
+                            elif role_type == 'ta':
+                                for entry in tas:
+                                    if entry.get('name', '').lower().strip() == match_name:
+                                        entry['email'] = email
+                                        break
+                            elif role_type == 'tutor':
+                                for entry in tutors:
+                                    if entry.get('name', '').lower().strip() == match_name:
+                                        entry['email'] = email
+                                        break
+                        else:
+                            print("✗")
+                    except KeyboardInterrupt:
+                        print("\nEmail fetching interrupted. Continuing with available data...")
+                        break
+                    except Exception as e:
+                        print(f"✗ ({type(e).__name__})")
+                print("Completed email fetching.")
+        else:
+            print("All staff members already have email addresses.")
+    elif staff_users and not HAS_REQUESTS:
+        print("Skipping email fetching (requests library not available).")
     
     return {
         'course_name': course_name,
