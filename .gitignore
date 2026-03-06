@@ -8,9 +8,6 @@ dist
 !.env.example
 .env.local
 
-# generated data (not committed)
-src/data/canvas-staff.json
-
 # logs
 npm-debug.log*
 yarn-debug.log*
