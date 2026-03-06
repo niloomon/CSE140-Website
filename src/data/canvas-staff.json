@@ -3,121 +3,99 @@
   "instructors": [
     {
       "name": "Niloofar Montazeri",
-      "email": "nimontaz@ucsc.edu",
-      "id": "105080"
+      "email": "nimontaz@ucsc.edu"
     }
   ],
   "tas": [
     {
       "name": "Batuhan Salih",
       "email": "basalih@ucsc.edu",
-      "id": "45433",
       "sections": ""
     },
     {
       "name": "Priyesh Vakharia",
       "email": "pvakhari@ucsc.edu",
-      "id": "87825",
       "sections": ""
     },
     {
       "name": "Philip Bizimis",
       "email": "pbizimis@ucsc.edu",
-      "id": "112680",
       "sections": ""
     },
     {
       "name": "Vanshika Jain",
       "email": "vnjain@ucsc.edu",
-      "id": "127649",
       "sections": ""
     }
   ],
   "tutors": [
     {
       "name": "Akhilesh Nidamanuri",
-      "email": "snidaman@ucsc.edu",
-      "id": "83175"
+      "email": "snidaman@ucsc.edu"
     },
     {
       "name": "Vaishnavi Jaligama",
-      "email": "vjaligam@ucsc.edu",
-      "id": "84006"
+      "email": "vjaligam@ucsc.edu"
     },
     {
       "name": "Bhagavan Carollo",
-      "email": "fcarollo@ucsc.edu",
-      "id": "85264"
+      "email": "fcarollo@ucsc.edu"
     },
     {
       "name": "Rajat Maheshwari",
-      "email": "ramahesh@ucsc.edu",
-      "id": "85787"
+      "email": "ramahesh@ucsc.edu"
     },
     {
       "name": "Catie Bronte",
-      "email": "cebronte@ucsc.edu",
-      "id": "86866"
+      "email": "cebronte@ucsc.edu"
     },
     {
       "name": "Adan Shafei",
-      "email": "ashafei@ucsc.edu",
-      "id": "87377"
+      "email": "ashafei@ucsc.edu"
     },
     {
       "name": "Jacob Wei",
-      "email": "jhwei@ucsc.edu",
-      "id": "95188"
+      "email": "jhwei@ucsc.edu"
     },
     {
       "name": "John Dy",
-      "email": "jidy@ucsc.edu",
-      "id": "96135"
+      "email": "jidy@ucsc.edu"
     },
     {
       "name": "Aditya Patil",
-      "email": "apatil7@ucsc.edu",
-      "id": "98334"
+      "email": "apatil7@ucsc.edu"
     },
     {
       "name": "Jacob Poschl",
-      "email": "jposchl@ucsc.edu",
-      "id": "99363"
+      "email": "jposchl@ucsc.edu"
     },
     {
       "name": "Arpana Koilada",
-      "email": "akoilada@ucsc.edu",
-      "id": "99509"
+      "email": "akoilada@ucsc.edu"
     },
     {
       "name": "Evan Nguyen",
-      "email": "evbnguye@ucsc.edu",
-      "id": "100051"
+      "email": "evbnguye@ucsc.edu"
     },
     {
       "name": "Brighton Alcantara",
-      "email": "brcalcan@ucsc.edu",
-      "id": "103740"
+      "email": "brcalcan@ucsc.edu"
     },
     {
       "name": "Aditya Sarin",
-      "email": "adsarin@ucsc.edu",
-      "id": "112326"
+      "email": "adsarin@ucsc.edu"
     },
     {
       "name": "Daniel Ward",
-      "email": "damward@ucsc.edu",
-      "id": "112711"
+      "email": "damward@ucsc.edu"
     },
     {
       "name": "Kevin Chan",
-      "email": "kchan94@ucsc.edu",
-      "id": "113781"
+      "email": "kchan94@ucsc.edu"
     },
     {
       "name": "Reva Agarwal",
-      "email": "reagarwa@ucsc.edu",
-      "id": "116230"
+      "email": "reagarwa@ucsc.edu"
     }
   ]
 }

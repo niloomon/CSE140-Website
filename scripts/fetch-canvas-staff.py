@@ -60,16 +60,20 @@ except ImportError:
 
 
 def load_config():
-    """Load Canvas configuration from environment variables."""
-    # Try standard environment variable names first, then VITE_ prefixed ones as fallback
+    """Load Canvas configuration from environment variables.
+    Uses CANVAS_* for secrets so they never go through Vite's client env.
+    """
+    # Derive server from CANVAS_SERVER, falling back to VITE_CANVAS_API_BASE_URL host if present
+    base_url = os.getenv('VITE_CANVAS_API_BASE_URL', '') or ''
+    server = (os.getenv('CANVAS_SERVER') or base_url.replace('https://', '').replace('http://', '').strip()) or 'canvas.ucsc.edu'
     config = {
-        'server': os.getenv('CANVAS_SERVER') or os.getenv('VITE_CANVAS_API_BASE_URL', '').replace('https://', '').replace('http://', '') or 'canvas.ucsc.edu',
-        'token': os.getenv('CANVAS_TOKEN') or os.getenv('VITE_CANVAS_API_TOKEN'),
+        'server': server,
+        'token': os.getenv('CANVAS_TOKEN'),
         'course': os.getenv('CANVAS_COURSE_ID') or os.getenv('VITE_CANVAS_COURSE_ID')
     }
     
     if not config['token']:
-        print('ERROR: Canvas token not found. Set CANVAS_TOKEN or VITE_CANVAS_API_TOKEN environment variable')
+        print('ERROR: Canvas token not found. Set CANVAS_TOKEN in .env.local (do not use a VITE_ prefix for the token).')
         sys.exit(1)
     
     if not config['course']:
@@ -108,7 +112,7 @@ def fetch_course_staff(config):
     users = backend.courses_users_resolve_and_list(course_query)
     print(f"  Fetched {len(users)} total users")
     
-    # Debug: Print all users with their roles
+    # Debug: Print all users with their roles (without exposing Canvas IDs)
     print("\n  DEBUG: All users and their roles:")
     user_roles_summary = {}
     for user in users:
@@ -117,76 +121,20 @@ def fetch_course_staff(config):
         role_value = role.value if role else 'None'
         role_key = f"{raw_role} ({role_value})"
         user_roles_summary[role_key] = user_roles_summary.get(role_key, 0) + 1
-        print(f"    - {user.name} (ID: {user.id}): {raw_role} / {role_value}")
+        print(f"    - {user.name}: {raw_role} / {role_value}")
     
     print(f"\n  DEBUG: Role summary:")
     for role_key, count in sorted(user_roles_summary.items()):
         print(f"    - {role_key}: {count}")
     
-    # Create a set of user IDs we already have
-    existing_user_ids = {user.id for user in users}
-    # Helper function to fetch user email from Canvas API
-    def fetch_user_email(user_id: str, user_name: str) -> str:
-        """Fetch user email by making a direct API call to Canvas."""
-        if not HAS_REQUESTS:
-            return ''
-        try:
-            # Ensure server URL has proper protocol
-            server_url = backend.server
-            if not server_url.startswith('http'):
-                server_url = 'https://' + server_url
-            
-            # Try the users endpoint first (more complete user data)
-            url = f"{server_url}/api/v1/users/{user_id}"
-            headers = backend.get_standard_headers()
-            
-            # Use shorter timeout to avoid hanging (3 seconds)
-            response = requests.get(url, headers=headers, timeout=3)
-            if response.status_code == 200:
-                user_data = response.json()
-                # Try multiple fields where email might be stored
-                email = (
-                    user_data.get('email') or 
-                    user_data.get('login_id') or 
-                    user_data.get('primary_email') or
-                    ''
-                )
-                if email:
-                    return email
-            
-            # Fallback to profile endpoint (skip if we got 403 on users endpoint)
-            if response.status_code != 403:
-                url = f"{server_url}/api/v1/users/{user_id}/profile"
-                response = requests.get(url, headers=headers, timeout=3)
-                if response.status_code == 200:
-                    profile_data = response.json()
-                    email = (
-                        profile_data.get('email') or 
-                        profile_data.get('login_id') or 
-                        profile_data.get('primary_email') or
-                        ''
-                    )
-                    if email:
-                        return email
-        except requests.exceptions.Timeout:
-            # Timeout - skip this user
-            return ''
-        except requests.exceptions.RequestException:
-            # Network error - skip this user
-            return ''
-        except Exception:
-            # Any other error - skip this user
-            return ''
-        return ''
-    
-    # Organize users by role and fetch emails
+    # Organize users by role and email (no Canvas IDs stored)
     instructors = []
     tas = []
     tutors = []
     
     print("\nOrganizing users by role...")
     
-    # First pass: organize users by role (without fetching emails yet)
+    # First pass: organize users by role (without fetching additional emails)
     # We'll organize them in order: instructor, TAs, tutors/readers
     instructor_users = []
     ta_users = []
@@ -198,10 +146,12 @@ def fetch_course_staff(config):
         role = getattr(user, 'role', None)
         role_value = role.value if role else None
         
+        # Build JSON-safe staff entry without Canvas user ID
+        staff_name = user.name or 'Unknown'
+        staff_email = user.email or ''  # Use email from initial fetch if available
         user_data = {
-            'name': user.name or 'Unknown',
-            'email': user.email or '',  # Use email from initial fetch if available
-            'id': user.id
+            'name': staff_name,
+            'email': staff_email,
         }
         
         # Canvas enrollment types: TeacherEnrollment, TaEnrollment, StudentEnrollment, 
@@ -245,7 +195,6 @@ def fetch_course_staff(config):
                 instructor_data = {
                     'name': user.name or 'Unknown',
                     'email': user.email or '',
-                    'id': user.id
                 }
                 instructors.append(instructor_data)
                 instructor_users.append((user, 'instructor'))
@@ -255,53 +204,11 @@ def fetch_course_staff(config):
     # Combine all staff users in order for email fetching: instructor, TAs, tutors/readers
     staff_users = instructor_users + ta_users + tutor_users
     
-    # Second pass: fetch emails only for staff members who don't have them
-    if staff_users and HAS_REQUESTS:
-        staff_needing_emails = [(u, rt) for u, rt in staff_users if not (u.email or '').strip()]
-        if staff_needing_emails:
-            print(f"Fetching email addresses for {len(staff_needing_emails)} staff members...")
-            print("(This may take a moment. If it hangs, you can skip email fetching by setting SKIP_EMAIL_FETCH=1)")
-            
-            # Check if we should skip email fetching
-            if os.getenv('SKIP_EMAIL_FETCH') == '1':
-                print("Skipping email fetch (SKIP_EMAIL_FETCH=1)")
-            else:
-                fetched_count = 0
-                for user, role_type in staff_needing_emails:
-                    print(f"  [{fetched_count + 1}/{len(staff_needing_emails)}] {user.name}...", end=' ', flush=True)
-                    try:
-                        email = fetch_user_email(user.id, user.name)
-                        if email:
-                            print(f"✓ {email}")
-                            # Update the appropriate list
-                            if role_type == 'instructor':
-                                for instructor in instructors:
-                                    if instructor['id'] == user.id:
-                                        instructor['email'] = email
-                                        break
-                            elif role_type == 'ta':
-                                for ta in tas:
-                                    if ta['id'] == user.id:
-                                        ta['email'] = email
-                                        break
-                            elif role_type == 'tutor':
-                                for tutor in tutors:
-                                    if tutor['id'] == user.id:
-                                        tutor['email'] = email
-                                        break
-                        else:
-                            print("✗")
-                    except KeyboardInterrupt:
-                        print("\nEmail fetching interrupted. Continuing with available data...")
-                        break
-                    except Exception as e:
-                        print(f"✗ ({type(e).__name__})")
-                    fetched_count += 1
-                print(f"Completed email fetching for {fetched_count} staff members.")
-        else:
-            print("All staff members already have email addresses.")
-    elif staff_users and not HAS_REQUESTS:
-        print("Skipping email fetching (requests library not available).")
+    # Second pass: we intentionally do NOT fetch additional emails via Canvas user IDs.
+    # This keeps the script from handling any persistent user identifiers beyond names/emails
+    # already provided by lms-toolkit.
+    if staff_users:
+        print("Skipping additional email fetching (no Canvas user IDs are used).")
     
     
     return {
