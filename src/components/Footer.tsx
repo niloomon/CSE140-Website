@@ -8,7 +8,6 @@
 
 import React from 'react';
 import { Footer7 } from '@/components/ui/footer-7';
-import { FaGithub, FaYoutube } from 'react-icons/fa';
 import ucscLogo from '../../ucsc.png';
 
 /**
@@ -51,7 +50,6 @@ const Footer = () => {
         links: [
           { name: "Yuja", href: "https://www.yuja.com/", external: true },
           { name: "Gradescope", href: "https://www.gradescope.com/", external: true },
-          { name: "Ed Discussion", href: "https://edstem.org/", external: true },
           { name: "Github", href: "https://github.com/ucsc-cse-140", external: true },
           { name: "Canvas", href: "https://canvas.ucsc.edu", external: true },
         ],
@@ -62,9 +60,6 @@ const Footer = () => {
         links: [
           { name: "UCSC Website", href: "https://www.ucsc.edu", external: true },
           { name: "Baskin Engineering", href: "https://engineering.ucsc.edu", external: true },
-          { name: "Academic Integrity", href: "https://docs.google.com/document/d/1NICSzZWFTFWxLsFHdVf8oA4PT8EwJZg0tH4u_SvG-Sk/edit?tab=t.0#heading=h.7idsdhgowpen", external: true },
-          { name: "Accessibility", href: "https://docs.google.com/document/d/1NICSzZWFTFWxLsFHdVf8oA4PT8EwJZg0tH4u_SvG-Sk/edit?tab=t.0#heading=h.7idsdhgowpen", external: true },
-          { name: "Student Support Services", href: "https://docs.google.com/document/d/1NICSzZWFTFWxLsFHdVf8oA4PT8EwJZg0tH4u_SvG-Sk/edit?tab=t.0#heading=h.7idsdhgowpen", external: true },
         ],
       },
     ],
@@ -81,12 +76,7 @@ const Footer = () => {
         <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
           <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Dr. Niloofar Montazeri</div>
           <div className="text-sm">Assistant Teaching Professor</div>
-          <a 
-            href="mailto:nimontaz@ucsc.edu" 
-            className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-          >
-            nimontaz@ucsc.edu
-          </a>
+          <div className="text-sm">Instructor contact and office hours are available through Canvas.</div>
         </div>
       </div>
     ),

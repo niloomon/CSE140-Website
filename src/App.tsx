@@ -12,8 +12,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 // Third-party Library Imports
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"; // For data fetching and caching
-import { BrowserRouter, Routes, Route } from "react-router-dom"; // For client-side routing
 import { ThemeProvider } from "next-themes"; // For theme management
+import { useEffect, useState } from "react";
 
 // Page Component Imports
 import Home from "./pages/Home";
@@ -21,7 +21,7 @@ import CourseCalendar from "./pages/CourseCalendar";
 import TeachingStaff from "./pages/TeachingStaff";
 import CourseMaterial from "./pages/CourseMaterial";
 import Projects from "./pages/Projects";
-import ScrollToTop from "./components/ScrollToTop";
+import { getAppPath } from "./components/AppLink";
 
 // Initialize React Query client for data fetching
 const queryClient = new QueryClient();
@@ -33,7 +33,7 @@ const queryClient = new QueryClient();
  * - QueryClientProvider: Enables React Query for data fetching
  * - ThemeProvider: Manages theme (currently forced to light mode)
  * - TooltipProvider: Enables tooltip functionality across the app
- * - BrowserRouter: Enables client-side routing
+ * - Local routing: Handles the small static site without an external router dependency
  * 
  * Defines all application routes:
  * - "/" - Home page (Home)
@@ -43,7 +43,25 @@ const queryClient = new QueryClient();
  * - "/projects" - Course projects page
  */
 const App = () => {
-  const routerBase = import.meta.env.BASE_URL ?? "/";
+  const [path, setPath] = useState(() => getAppPath());
+
+  useEffect(() => {
+    const handleRouteChange = () => setPath(getAppPath());
+    window.addEventListener("popstate", handleRouteChange);
+    return () => window.removeEventListener("popstate", handleRouteChange);
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, [path]);
+
+  const routes: Record<string, JSX.Element> = {
+    "/": <Home />,
+    "/course-calendar": <CourseCalendar />,
+    "/teaching-staff": <TeachingStaff />,
+    "/course-material": <CourseMaterial />,
+    "/projects": <Projects />,
+  };
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -53,27 +71,7 @@ const App = () => {
           <Toaster />
           <Sonner />
           
-          {/* Router setup - handles all page navigation */}
-          <BrowserRouter basename={routerBase}>
-            {/* Scroll to top on route change */}
-            <ScrollToTop />
-            <Routes>
-              {/* Home page - Course overview and information */}
-              <Route path="/" element={<Home />} />
-              
-              {/* Calendar page - Course schedule and important dates */}
-              <Route path="/course-calendar" element={<CourseCalendar />} />
-              
-              {/* Teaching staff page - Instructor, TAs, and tutors information */}
-              <Route path="/teaching-staff" element={<TeachingStaff />} />
-              
-              {/* Lecture slides page - Downloadable lecture materials */}
-              <Route path="/course-material" element={<CourseMaterial />} />
-              
-              {/* Projects page - Course programming assignments */}
-              <Route path="/projects" element={<Projects />} />
-            </Routes>
-          </BrowserRouter>
+          {routes[path] ?? <Home />}
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>

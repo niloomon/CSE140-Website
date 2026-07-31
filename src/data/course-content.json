@@ -51,15 +51,15 @@
       "title": "Important announcements will be through Canvas Announcements",
       "description": "You are responsible for reading them as they can contain important logistics information."
     },
-    "description": "Ed Discussion will be used mainly for Q&A.",
+    "description": "The active quarter discussion platform will be listed in Canvas.",
     "guidelines": {
       "title": "This is a very large class. In order to get a response in a reasonable time, please use the communication channels below based on the specific issue you need to resolve:",
       "items": [
         {
-          "text": "<strong>Lecture slides/book questions</strong> → Ed Discussion, Instructor and TA office hours"
+          "text": "<strong>Lecture slides/book questions</strong> → Canvas discussion platform, instructor and TA office hours"
         },
         {
-          "text": "<strong>Assignment questions</strong> → Ed Discussion, TA office hours"
+          "text": "<strong>Assignment questions</strong> → Canvas discussion platform, TA office hours"
         },
         {
           "text": "<strong>Personal concerns</strong> → Meet the instructor after class or in office hours"
@@ -74,14 +74,14 @@
     "title": "QA Etiquette",
     "icon": "AlertCircle",
     "iconColor": "orange",
-    "description": "We will use Ed Discussion for QA (Link on top of this page as well as the navigation bar on the left). We will keep you posted if that changes. Irrespective of which platform we use for discussion, there are a few baselines for good Ed Discussion etiquette:",
+    "description": "The active quarter Q&A platform will be listed in Canvas. Irrespective of which platform we use for discussion, there are a few baselines for good discussion etiquette:",
     "items": [
       "Please be <strong>respectful</strong> and <strong>constructive</strong> in all communications, whether to students or to teaching staff.",
       "Before asking a question, check to see if it has already been answered, and if so, remember to link to previously posted useful answers.",
       "Further, please be sure to <strong>take some time to think about your problem</strong> or issue before posting. Consider using the <strong>\"30 minute rule\"</strong>: spend at least 30 minutes trying to figure things out on your own before posting. We definitely want you to get the help you need, as soon as possible, but occasionally we see students who post as soon as they have some small issue or hiccup. The point of class assignments is for you to have to think, and sometimes that's hard (but most of all, it's fun too!",
       "On the other hand, <strong>clarification questions</strong>, etc. are <strong>totally welcomed</strong>, and should be asked immediately.",
-      "<strong class=\"text-red-600 dark:text-red-400\">UNDER NO CIRCUMSTANCES</strong> should <strong>code</strong> be posted on Ed Discussion. If you need help with code, you should attend office hours or the discussion sections.",
-      "Also, remember that while you may post <strong>anonymously</strong> to the class, the <strong>instructors always see who is posting</strong>. Again, the goal is for Ed Discussion to be a useful, pleasant, positive environment for all!"
+      "<strong class=\"text-red-600 dark:text-red-400\">UNDER NO CIRCUMSTANCES</strong> should <strong>code</strong> be posted on the course discussion platform. If you need help with code, you should attend office hours or the discussion sections.",
+      "Also, remember that while you may post <strong>anonymously</strong> to the class, the <strong>instructors always see who is posting</strong>. Again, the goal is for the discussion platform to be a useful, pleasant, positive environment for all!"
     ]
   },
   "grading": {
@@ -279,7 +279,7 @@
         ],
         "link": {
           "text": "Academic Integrity Details",
-          "url": "https://docs.google.com/document/d/1NICSzZWFTFWxLsFHdVf8oA4PT8EwJZg0tH4u_SvG-Sk/edit#heading=h.72t90jlgoosk"
+          "url": "#"
         }
       },
       {
@@ -295,11 +295,11 @@
         "items": [
           {
             "text": "Accessibility",
-            "url": "https://docs.google.com/document/d/1NICSzZWFTFWxLsFHdVf8oA4PT8EwJZg0tH4u_SvG-Sk/edit#heading=h.72t90jlgoosk"
+            "url": "#"
           },
           {
             "text": "Student Support Services",
-            "url": "https://docs.google.com/document/d/1NICSzZWFTFWxLsFHdVf8oA4PT8EwJZg0tH4u_SvG-Sk/edit#heading=h.72t90jlgoosk"
+            "url": "#"
           }
         ]
       }

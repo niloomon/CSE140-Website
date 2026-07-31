@@ -177,16 +177,9 @@ Create a `.env.local` file in the root directory to configure various aspects of
 # Canvas Fetch
 VITE_CANVAS_API_BASE_URL=https://canvas.ucsc.edu
 VITE_CANVAS_COURSE_ID=1234
-VITE_CANVAS_API_TOKEN=canvas_api_token
 
-# Google Docs URLs for embedded iframes
-VITE_CALENDAR_URL=https://docs.google.com/document/d/1L1iCRayCBm1d1k2B9QrTdymtCrEicXc2li1hXPdKYL0/edit?tab=t.0
-VITE_OFFICE_HOURS_URL=https://docs.google.com/document/d/1qlxvJ-XVo97HnBuxywVqQFlHlZlN4aj01F6ecovUPvM/edit?tab=t.0
-
-# Discussion & Forms URLs
-VITE_ED_DISCUSSION_URL=https://edstem.org/us/courses/87555/discussion
-VITE_PROGRAMMING_ASSIGNMENT_FEEDBACK_URL=https://docs.google.com/document/d/1dv4JcX2gDdzDs0zQih538W2e7_9PWSjfHXkOX-XPbpQ/edit?tab=t.0
-VITE_STUDY_GROUP_FORM_URL=https://docs.google.com/spreadsheets/d/1Zp8oONdAD9V-KqNKsvSe4CbqrF9v43dFGaby9vJ1k0U/edit?gid=1671569792#gid=1671569792
+# Do not put Canvas API tokens in VITE_* variables.
+# VITE_* values are public in the browser bundle.
 
 # Tournament URL
 VITE_TOURNAMENT_URL=http://seacliff.soe.ucsc.edu/cse140-f25/tournaments/
@@ -209,7 +202,6 @@ VITE_TOURNAMENT_URL=http://seacliff.soe.ucsc.edu/cse140-f25/tournaments/
 | `VITE_PROJECT_2_DUE_DATE` | Due date for Project 2 | No | "TBD" | `src/pages/Projects.tsx` |
 | `VITE_PROJECT_3_DUE_DATE` | Due date for Project 3 | No | "TBD" | `src/pages/Projects.tsx` |
 | `VITE_PROJECT_4_DUE_DATE` | Due date for Project 4 | No | "TBD" | `src/pages/Projects.tsx` |
-| `VITE_ED_DISCUSSION_URL` | Ed Discussion forum URL | No | Hardcoded fallback | `src/pages/Home.tsx`, `src/pages/HomeHardcoded.tsx` |
 | `VITE_PROGRAMMING_ASSIGNMENT_FEEDBACK_URL` | Programming assignment feedback document URL | No | Hardcoded fallback | `src/pages/Home.tsx`, `src/pages/HomeHardcoded.tsx` |
 | `VITE_TOURNAMENT_URL` | Tournament/competition URL | No | Hidden if not set | `src/pages/Home.tsx`, `src/pages/HomeHardcoded.tsx` |
 | `VITE_STUDY_GROUP_FORM_URL` | Study group signup form URL | No | Hardcoded fallback | `src/pages/Home.tsx`, `src/pages/HomeHardcoded.tsx` |
@@ -240,7 +232,7 @@ Project due dates can be updated in two ways:
 
 #### External Links
 
-External links (Ed Discussion, Google Docs, etc.) can be updated:
+External links can be updated:
 
 1. **Using Environment Variables:**
    - Update the corresponding `VITE_*_URL` variables in `.env.local`
@@ -275,7 +267,7 @@ The syllabus content is stored in `src/data/course-content.json`. This JSON file
 The `course-content.json` file has the following main sections:
 
 - `courseDescription`: Course overview, topics, textbook, prerequisites
-- `communicationChannels`: Announcements, Ed Discussion info, guidelines
+- `communicationChannels`: Announcements, discussion platform info, guidelines
 - `qaEtiquette`: Q&A platform etiquette rules
 - `grading`: Grade components and grade scale
 - `learningOutcomes`: Course learning objectives

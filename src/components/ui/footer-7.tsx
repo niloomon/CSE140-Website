@@ -1,6 +1,6 @@
 import React from "react";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/AppLink";
 
 interface Footer7Props {
   logo?: {
@@ -158,4 +158,3 @@ export const Footer7 = ({
     </section>
   );
 };
-

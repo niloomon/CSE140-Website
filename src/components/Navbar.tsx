@@ -11,8 +11,8 @@
 
 import React from 'react';
 // Icon imports from lucide-react
-import { Book, Menu, Calendar, FileText, Users, Mail, Home } from "lucide-react";
-import { Link } from 'react-router-dom';
+import { Book, Menu, Calendar, FileText, Users, Home } from "lucide-react";
+import { Link } from '@/components/AppLink';
 
 // UI Component imports - Accordion for mobile menu
 import {
@@ -82,7 +82,6 @@ const Navbar = () => {
     { title: "Projects", url: "/projects" },
     { title: "Yuja", url: "https://www.yuja.com/", external: true },
     { title: "Gradescope", url: "https://www.gradescope.com/", external: true },
-    { title: "Ed Discussion", url: "https://edstem.org/", external: true },
   ];
 
   // Additional links shown only in mobile menu (not in desktop)

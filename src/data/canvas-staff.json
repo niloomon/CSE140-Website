@@ -2,100 +2,78 @@
   "course_name": "Artificial Intelligence",
   "instructors": [
     {
-      "name": "Niloofar Montazeri",
-      "email": "nimontaz@ucsc.edu"
+      "name": "Niloofar Montazeri"
     }
   ],
   "tas": [
     {
       "name": "Batuhan Salih",
-      "email": "basalih@ucsc.edu",
       "sections": ""
     },
     {
       "name": "Priyesh Vakharia",
-      "email": "pvakhari@ucsc.edu",
       "sections": ""
     },
     {
       "name": "Philip Bizimis",
-      "email": "pbizimis@ucsc.edu",
       "sections": ""
     },
     {
       "name": "Vanshika Jain",
-      "email": "vnjain@ucsc.edu",
       "sections": ""
     }
   ],
   "tutors": [
     {
-      "name": "Akhilesh Nidamanuri",
-      "email": "snidaman@ucsc.edu"
+      "name": "Akhilesh Nidamanuri"
     },
     {
-      "name": "Vaishnavi Jaligama",
-      "email": "vjaligam@ucsc.edu"
+      "name": "Vaishnavi Jaligama"
     },
     {
-      "name": "Bhagavan Carollo",
-      "email": "fcarollo@ucsc.edu"
+      "name": "Bhagavan Carollo"
     },
     {
-      "name": "Rajat Maheshwari",
-      "email": "ramahesh@ucsc.edu"
+      "name": "Rajat Maheshwari"
     },
     {
-      "name": "Catie Bronte",
-      "email": "cebronte@ucsc.edu"
+      "name": "Catie Bronte"
     },
     {
-      "name": "Adan Shafei",
-      "email": "ashafei@ucsc.edu"
+      "name": "Adan Shafei"
     },
     {
-      "name": "Jacob Wei",
-      "email": "jhwei@ucsc.edu"
+      "name": "Jacob Wei"
     },
     {
-      "name": "John Dy",
-      "email": "jidy@ucsc.edu"
+      "name": "John Dy"
     },
     {
-      "name": "Aditya Patil",
-      "email": "apatil7@ucsc.edu"
+      "name": "Aditya Patil"
     },
     {
-      "name": "Jacob Poschl",
-      "email": "jposchl@ucsc.edu"
+      "name": "Jacob Poschl"
     },
     {
-      "name": "Arpana Koilada",
-      "email": "akoilada@ucsc.edu"
+      "name": "Arpana Koilada"
     },
     {
-      "name": "Evan Nguyen",
-      "email": "evbnguye@ucsc.edu"
+      "name": "Evan Nguyen"
     },
     {
-      "name": "Brighton Alcantara",
-      "email": "brcalcan@ucsc.edu"
+      "name": "Brighton Alcantara"
     },
     {
-      "name": "Aditya Sarin",
-      "email": "adsarin@ucsc.edu"
+      "name": "Aditya Sarin"
     },
     {
-      "name": "Daniel Ward",
-      "email": "damward@ucsc.edu"
+      "name": "Daniel Ward"
     },
     {
-      "name": "Kevin Chan",
-      "email": "kchan94@ucsc.edu"
+      "name": "Kevin Chan"
     },
     {
-      "name": "Reva Agarwal",
-      "email": "reagarwa@ucsc.edu"
+      "name": "Reva Agarwal"
     }
   ]
 }

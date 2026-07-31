@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/AppLink";
 import { useState } from "react";
 import { Ghost } from "lucide-react";
 

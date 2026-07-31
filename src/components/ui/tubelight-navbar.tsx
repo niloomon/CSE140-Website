@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import { Link } from "react-router-dom"
+import { Link } from "@/components/AppLink"
 import { LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ThemeSwitch } from "@/components/ui/theme-switch-button"
