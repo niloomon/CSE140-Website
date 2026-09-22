@@ -1,0 +1,74 @@
+{
+  "_HOW_TO_EDIT": [
+    "This file is the Course Material page. Edit it here - you do not need to touch any code.",
+    "TO ADD A LINK: put the URL between the quotes of \"link\". Example:  \"link\": \"https://drive.google.com/file/d/ABC123/view\"",
+    "NO LINK YET: leave it as \"link\": \"\"  - the row still shows, with the word 'Canvas' in the PDF column.",
+    "MODULE NUMBERS: \"number\" is the module, and it matches the M-prefix of the deck's file name in OneDrive (M0-00-Intro.pptx is module 0). A module can have several decks - just give each its own row with the same number.",
+    "TO ADD A ROW: copy a whole { ... } line, paste it, change the words. Every row needs a comma after it EXCEPT the last one in a list.",
+    "TO HIDE A ROW WITHOUT LOSING IT: add  \"hidden\": true  to that row. It disappears from the website but stays in this file. Delete those two words to bring it back.",
+    "TO REMOVE A ROW: delete its whole { ... } line (and fix the commas so the last row has none).",
+    "\"viewOnly\": true means show only a 'View' link and no 'Download' - use it for links to web pages rather than files.",
+    "Keep every \" and , exactly where they are. If the page goes blank, a comma or quote is missing."
+  ],
+  "sections": [
+    {
+      "title": "Lecture Slides",
+      "description": "Lecture decks open in OneDrive.",
+      "columnLabel": "Module",
+      "emptyLabel": "OneDrive",
+      "items": [
+        { "number": 0, "topic": "Intro", "link": "https://1drv.ms/p/c/6e432cb3cc755285/IQCMLCNS7mLcSLljBuyFENO3ARGQB7oWoValeb-v-Tzd_dI?e=VSm3hH", "viewOnly": true },
+        { "number": 0, "topic": "Intelligent Agents", "link": "https://1drv.ms/p/c/6e432cb3cc755285/IQAvbMKOe4F3ToCXKNEBCiEQAaVB6o197c2iqLvNPuPQKDU", "viewOnly": true },
+        { "number": 1, "topic": "Blind Search", "link": "https://1drv.ms/p/c/6e432cb3cc755285/IQCrcaXMQUh9QpEIr-dgNMxgAcCm0lpWFBn36seUPl4yaII?e=kuKrsU", "viewOnly": true },
+        { "number": 1, "topic": "Informed Search", "link": "https://1drv.ms/p/c/6e432cb3cc755285/IQCApF2QdN_ERpYMfPoasr4zATVvO_v_xA-y_ngVWa3BK0c?e=6iEK3", "viewOnly": true },
+        { "number": 2, "topic": "Constraint Satisfaction Problems", "link": "https://1drv.ms/p/c/6e432cb3cc755285/IQAolX3bqw_aSY14KinUmXWQAWQG0EvXouWZL2Ea6p_sRtU?e=lUMDmD", "viewOnly": true },
+        { "number": 3, "topic": "Adversarial Search", "link": "https://1drv.ms/p/c/6e432cb3cc755285/IQB_p3ncBjRfS4sYG9e16lEVAUa66Fg832bSRslJ9QG9sWI?e=nrbWGQ", "viewOnly": true },
+        { "number": 4, "topic": "MDP-Value/Policy Iteration", "link": "https://1drv.ms/p/c/6e432cb3cc755285/IQAHQtoWyotvQ4CLwFVOZYQlAe17KkHCtW6O5rdPfXxtmjM?e=IO2wGn", "viewOnly": true },
+        { "number": 5, "topic": "Reinforcement Learning", "link": "https://1drv.ms/p/c/6e432cb3cc755285/IQDHWmVq70d1TJY8QVAlojv3AV_3VcFxv781yUbbC9IJvEY?e=OntT8b", "viewOnly": true },
+        { "number": 5, "topic": "Q Learning", "link": "https://1drv.ms/p/c/6e432cb3cc755285/IQDHWmVq70d1TJY8QVAlojv3AV_3VcFxv781yUbbC9IJvEY?e=OntT8b", "viewOnly": true },
+        { "number": 6, "topic": "KRR1", "link": "https://1drv.ms/p/c/6e432cb3cc755285/IQBNkOSJAB-uSYfgGKY_8lD2Abis-hL_TBn8V4KLaYdi1Qo?e=OzrLnU", "viewOnly": true },
+        { "number": 6, "topic": "KRR2", "link": "https://1drv.ms/p/c/6e432cb3cc755285/IQBqeiLJFIa_RI3vU4m-WgvaAcCp-VE62Q_4yBRrB1I2sBM", "viewOnly": true },
+        { "number": 7, "topic": "Probability", "link": "", "hidden": true },
+        { "number": 7, "topic": "Bayes Nets", "link": "", "hidden": true }
+      ]
+    },
+    {
+      "title": "Discussion Slides",
+      "description": "Discussion materials are posted in Canvas for the active quarter.",
+      "columnLabel": "Discussion",
+      "items": [
+        { "number": 1, "topic": "Search Algorithms", "link": "" },
+        { "number": 2, "topic": "Search Agents", "link": "" },
+        { "number": 3, "topic": "MultiAgent Pacman", "link": "" },
+        { "number": 4, "topic": "MultiAgent Pacman", "link": "" },
+        { "number": 5, "topic": "Value Iteration and Q Learning - 1", "link": "" },
+        { "number": 6, "topic": "Value Iteration and Q Learning - 2", "link": "" }
+      ]
+    },
+    {
+      "title": "Supplementary Material",
+      "description": "Reference material to reinforce core concepts and refresh prerequisites.",
+      "columnLabel": "Module",
+      "items": [
+        { "number": 3, "topic": "Practice Alpha-Beta Pruning", "link": "https://schaerli.org/info2/abTreePractice/", "viewOnly": true },
+        { "number": 4, "topic": "Approximate Q-Learning", "link": "https://forns.lmu.build/classes/spring-2020/cmsi-432/lecture-11-2.html", "viewOnly": true },
+        { "number": 4, "topic": "MDP and Reinforcement Learning Summary", "link": "" },
+        { "number": 4, "topic": "P3 Compendium", "link": "" },
+        { "number": 5, "topic": "Knowledge Representation and Logical Agents Summary", "link": "" },
+        { "number": 6, "topic": "Bayes and Probabilistic Reasoning Summary", "link": "" },
+        { "number": 6, "topic": "D-Separation Notes", "link": "" }
+      ]
+    },
+    {
+      "title": "Cheat Sheet",
+      "description": "Reference sheets for quizzes and exams are posted in Canvas when available.",
+      "isCheatSheet": true,
+      "items": [
+        { "number": 0, "topic": "Quiz 12", "link": "" },
+        { "number": 0, "topic": "Quiz 34", "link": "" },
+        { "number": 0, "topic": "Quiz 56", "link": "" },
+        { "number": 0, "topic": "Final Exam", "link": "" }
+      ]
+    }
+  ]
+}

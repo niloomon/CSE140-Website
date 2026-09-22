@@ -14,19 +14,28 @@ import Footer from '@/components/Footer';
 import HeroSection from '@/components/HeroSection';
 import { Card } from '@/components/ui/card';
 import { BookOpen, Download, Eye } from 'lucide-react';
+import courseMaterials from '@/data/course-materials.json';
+
+// ⬇️ ALL THE CONTENT OF THIS PAGE LIVES IN src/data/course-materials.json
+//    Add or change a slide link there. You do not need to edit this file.
 
 type SlideEntry = {
   number: number;
   topic: string;
-  pdf: string;
+  link: string;
+  viewOnly?: boolean;
+  hidden?: boolean;
 };
 
 type SlideSection = {
   title: string;
   description: string;
-  data: SlideEntry[];
+  items: SlideEntry[];
   columnLabel?: string;
   isCheatSheet?: boolean;
+  emptyLabel?: string;
+  folderLink?: string;
+  folderLinkLabel?: string;
 };
 
 const getDownloadUrl = (url: string): string => {
@@ -42,73 +51,8 @@ const getDownloadUrl = (url: string): string => {
  * - View and download links
  */
 const CourseMaterial = () => {
-  // Lecture data - array of all lectures with module numbers and topics
-  const lectureSlides: SlideEntry[] = [
-    { number: 0, topic: 'Intro', pdf: '#' },
-    { number: 0, topic: 'Intelligent Agents', pdf: '#' },
-    { number: 1, topic: 'Blind Search', pdf: '#' },
-    { number: 1, topic: 'Heuristic Search', pdf: '#' },
-    { number: 2, topic: 'Constraint Satisfaction Problems', pdf: '#' },
-    { number: 3, topic: 'Adversarial Search', pdf: '#' },
-    { number: 4, topic: 'MDP-Value/Policy Iteration', pdf: '#' },
-    { number: 4, topic: 'Reinforcement Learning', pdf: '#' },
-    { number: 4, topic: 'Q Learning', pdf: '#' },
-    { number: 5, topic: 'Logic Slides I', pdf: '#' },
-    { number: 5, topic: 'Logic Slides II', pdf: '#' },
-    { number: 6, topic: 'Probability', pdf: '#' },
-    { number: 6, topic: 'Bayes Nets', pdf: '#' }
-  ];
-
-  const discussionSlides: SlideEntry[] = [
-    { number: 1, topic: 'Search Algorithms', pdf: '#' },
-    { number: 2, topic: 'Search Agents', pdf: '#' },
-    { number: 3, topic: 'MultiAgent Pacman', pdf: '#' },
-    { number: 4, topic: 'MultiAgent Pacman', pdf: '#' },
-    { number: 5, topic: 'Value Iteration and Q Learning - 1', pdf: '#' },
-    { number: 6, topic: 'Value Iteration and Q Learning - 2', pdf: '#' },
-  ];
-
-  const supplementaryNotes: SlideEntry[] = [
-    { number: 3, topic: 'Practice Alpha-Beta Pruning', pdf: 'https://schaerli.org/info2/abTreePractice/' },
-    { number: 4, topic: 'Approximate Q-Learning', pdf: 'https://forns.lmu.build/classes/spring-2020/cmsi-432/lecture-11-2.html' },
-    { number: 4, topic: 'MDP and Reinforcement Learning Summary', pdf: '#' },
-    { number: 4, topic: 'P3 Compendium', pdf: '#' },
-    { number: 5, topic: 'Knowledge Representation and Logical Agents Summary', pdf: '#' },
-    { number: 6, topic: 'Bayes and Probabilistic Reasoning Summary', pdf: '#' },
-    { number: 6, topic: 'D-Seperation Notes', pdf: '#' },
-  ];
-
-  const cheatSheets: SlideEntry[] = [
-    { number: 0, topic: 'Quiz 12', pdf: '#' },
-    { number: 0, topic: 'Quiz 34', pdf: '#' },
-    { number: 0, topic: 'Quiz 56', pdf: '#' },
-    { number: 0, topic: 'Final Exam', pdf: '#' },
-  ];
-
-  const slideSections: SlideSection[] = [
-    {
-      title: 'Lecture Slides',
-      description: 'Lecture decks are posted in Canvas for the active quarter.',
-      data: lectureSlides,
-    },
-    {
-      title: 'Discussion Slides',
-      description: 'Discussion materials are posted in Canvas for the active quarter.',
-      data: discussionSlides,
-      columnLabel: 'Discussion',
-    },
-    {
-      title: 'Supplementary Material',
-      description: 'Reference material to reinforce core concepts and refresh prerequisites.',
-      data: supplementaryNotes,
-    },
-    {
-      title: 'Cheat Sheet',
-      description: 'Reference sheets for quizzes and exams are posted in Canvas when available.',
-      data: cheatSheets,
-      isCheatSheet: true,
-    },
-  ];
+  // Every row shown on this page comes from src/data/course-materials.json
+  const slideSections = courseMaterials.sections as SlideSection[];
 
   return (
     <>
@@ -130,6 +74,17 @@ const CourseMaterial = () => {
               <div className="mb-6 text-center">
                 <h2 className="text-3xl font-bold text-gray-900">{section.title}</h2>
                 <p className="text-gray-600 mt-2">{section.description}</p>
+                {section.folderLink && (
+                  <a
+                    href={section.folderLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex items-center gap-2 rounded-md border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-100"
+                  >
+                    <Eye className="h-4 w-4" />
+                    {section.folderLinkLabel ?? 'Open the folder'}
+                  </a>
+                )}
               </div>
 
               <Card className="overflow-hidden">
@@ -152,8 +107,8 @@ const CourseMaterial = () => {
                     </thead>
 
                     <tbody className="divide-y divide-gray-200">
-                      {section.data.map((entry, index) => {
-                        const isAvailable = entry.pdf !== '#';
+                      {section.items.filter((entry) => !entry.hidden).map((entry, index) => {
+                        const isAvailable = Boolean(entry.link) && entry.link !== '#';
                         return (
                         <tr key={`${section.title}-${index}`} className="hover:bg-gray-50 transition-colors">
                           {!section.isCheatSheet && (
@@ -168,7 +123,7 @@ const CourseMaterial = () => {
                             {isAvailable ? (
                               <div className="flex items-center justify-center gap-4">
                                 <a
-                                  href={entry.pdf}
+                                  href={entry.link}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
@@ -176,11 +131,11 @@ const CourseMaterial = () => {
                                   <Eye className="h-4 w-4" />
                                   View
                                 </a>
-                                {!(section.title === 'Supplementary Material' && (index === 0 || index === 1)) && (
+                                {!entry.viewOnly && (
                                   <>
                                     <span className="text-gray-300">|</span>
                                     <a
-                                      href={getDownloadUrl(entry.pdf)}
+                                      href={getDownloadUrl(entry.link)}
                                       download
                                       className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
                                     >
@@ -191,7 +146,7 @@ const CourseMaterial = () => {
                                 )}
                               </div>
                             ) : (
-                              <span className="text-sm text-gray-500">Canvas</span>
+                              <span className="text-sm text-gray-500">{section.emptyLabel ?? 'Canvas'}</span>
                             )}
                           </td>
                         </tr>
