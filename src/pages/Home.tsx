@@ -19,7 +19,7 @@ const Hero = () => (
         <p className="text-sm font-semibold uppercase tracking-wider text-blue-600 mb-3">
           CSE 140
         </p>
-        <h1 className="text-4xl md:text-6xl font-bold text-gray-950 mb-6">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-950 mb-6">
           {canvasStaffData.course_name}
         </h1>
         <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
