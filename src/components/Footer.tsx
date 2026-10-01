@@ -66,7 +66,7 @@ const Footer = () => {
     description: (
       <div className="space-y-2">
         <div>
-          <div className="font-semibold text-gray-900 dark:text-white">CSE 140: Artificial Intelligence</div>
+          <div className="font-semibold text-gray-900 dark:text-white">CSE 140: Introduction to Artificial Intelligence</div>
           <div className="text-sm">UCSC Computer Science Department</div>
           <div className="text-sm">Baskin School of Engineering</div>
           <div className="text-sm">University of California, Santa Cruz</div>

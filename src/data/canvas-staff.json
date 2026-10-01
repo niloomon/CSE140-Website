@@ -5,7 +5,7 @@
     "WARNING: that fetch, and 'npm run build' (which calls it), will write names back into this file, and anything in this file ships inside the website's JavaScript even when it is not displayed. Clear them again before publishing unless you want them public.",
     "To display the sections once names are present, set SHOW_TEACHING_ASSISTANTS / SHOW_UNDERGRADUATE_ASSISTANTS to true in src/pages/TeachingStaff.tsx."
   ],
-  "course_name": "Artificial Intelligence",
+  "course_name": "Introduction to Artificial Intelligence",
   "instructors": [
     {
       "name": "Niloofar Montazeri"

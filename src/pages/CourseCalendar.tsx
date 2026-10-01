@@ -39,7 +39,7 @@ const CourseCalendar = () => {
 
       <HeroSection
         title="Course Calendar"
-        subtitle="CSE 140 - Artificial Intelligence"
+        subtitle="CSE 140 - Introduction to Artificial Intelligence"
         icon={<CalendarIcon className="h-12 w-12 text-blue-600" />}
       />
 
