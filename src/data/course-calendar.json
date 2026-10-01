@@ -1,0 +1,14 @@
+{
+  "_HOW_TO_EDIT": [
+    "This file controls the 'Current Calendar' box on the Course Calendar page.",
+    "TO SHOW YOUR GOOGLE DOC: paste its link between the quotes of \"embedUrl\". The ordinary link from Google Docs is fine - the page converts it for embedding by itself.",
+    "IMPORTANT - SHARING: the doc must be viewable without signing in, or visitors get an empty grey box. In Google Docs: Share -> General access -> 'Anyone with the link' -> Viewer.",
+    "ALTERNATIVE: File -> Share -> Publish to the web, then paste the address it gives you (it ends in /pub). That also works and does not expose the editing link.",
+    "LEAVE IT EMPTY (\"\") and the page shows the fallbackText message instead - no broken box.",
+    "heading is the title shown above the doc. height is how tall the embedded doc is, in pixels."
+  ],
+  "heading": "Current Calendar",
+  "embedUrl": "https://docs.google.com/document/d/e/2PACX-1vSLXlKGoE-0FN3NYhTRbpJOCoPgOfArCK76PZ3R2I7mR52v0Qpi6ledpj6AZ5l3lEZOrsnvK6niqkIC/pub?embedded=true",
+  "height": 800,
+  "fallbackText": "The live course calendar, deadlines, and schedule updates are posted in Canvas for the active quarter."
+}

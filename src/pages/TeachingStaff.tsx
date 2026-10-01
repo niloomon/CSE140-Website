@@ -14,6 +14,11 @@ import { Users } from 'lucide-react';
 import canvasStaffData from '@/data/canvas-staff.json';
 import instructorBiosData from '@/data/instructor-bio.json';
 
+// Only the instructor is shown on this page.
+// Change either of these to true to bring that section back.
+const SHOW_TEACHING_ASSISTANTS = false;
+const SHOW_UNDERGRADUATE_ASSISTANTS = false;
+
 type StaffMember = {
   name: string;
   title?: string;
@@ -22,10 +27,12 @@ type StaffMember = {
   image?: string;
 };
 
+// Used only if the staff data file has no instructor in it.
+// The bio shown on the page comes from src/data/instructor-bio.json — edit it there.
 const fallbackInstructor: StaffMember = {
   name: 'Niloofar Montazeri',
   title: 'Assistant Teaching Professor',
-  bio: 'My name is Niloofar Montazeri, and I am your instructor for CSE 140. I am an Assistant Teaching Professor at UC Santa Cruz, with previous experience teaching for seven years at UC Riverside. I hold a PhD in Computer Science from the University of Southern California, specializing in Human Language Technologies.',
+  bio: 'Niloofar Montazeri is an Assistant Teaching Professor of Computer Science and Engineering at UC Santa Cruz. She received her PhD in Computer Science from the University of Southern California, where her research focused on Artificial Intelligence and Natural Language Processing. Before joining UC Santa Cruz, she taught computer science for seven years at UC Riverside.',
   image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
 };
 
@@ -61,13 +68,13 @@ const TeachingStaff = () => {
       })
     : [fallbackInstructor];
 
-  const tas: StaffMember[] = ((canvasStaffData as any).tas || []).map((ta: any) => ({
+  const tas: StaffMember[] = (SHOW_TEACHING_ASSISTANTS ? ((canvasStaffData as any).tas || []) : []).map((ta: any) => ({
     name: ta.name,
     sections: ta.sections || '',
     image: getAvatarUrl(ta.name),
   }));
 
-  const tutors: StaffMember[] = ((canvasStaffData as any).tutors || []).map((tutor: any) => ({
+  const tutors: StaffMember[] = (SHOW_UNDERGRADUATE_ASSISTANTS ? ((canvasStaffData as any).tutors || []) : []).map((tutor: any) => ({
     name: tutor.name,
     image: getAvatarUrl(tutor.name),
   }));
@@ -78,7 +85,7 @@ const TeachingStaff = () => {
 
       <HeroSection
         title="Teaching Staff"
-        subtitle="Meet your instructor, teaching assistants and tutors for CSE 140"
+        subtitle="Meet your instructor for CSE 140"
         icon={<Users className="h-12 w-12 text-blue-600" />}
       />
 

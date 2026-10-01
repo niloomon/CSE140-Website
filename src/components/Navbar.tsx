@@ -80,8 +80,6 @@ const Navbar = () => {
     { title: "Teaching Staff", url: "/teaching-staff" },
     { title: "Course Material", url: "/course-material" },
     { title: "Projects", url: "/projects" },
-    { title: "Yuja", url: "https://www.yuja.com/", external: true },
-    { title: "Gradescope", url: "https://www.gradescope.com/", external: true },
   ];
 
   // Additional links shown only in mobile menu (not in desktop)

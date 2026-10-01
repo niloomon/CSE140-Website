@@ -36,6 +36,8 @@ type SlideSection = {
   emptyLabel?: string;
   folderLink?: string;
   folderLinkLabel?: string;
+  linkColumnLabel?: string;
+  hidden?: boolean;
 };
 
 const getDownloadUrl = (url: string): string => {
@@ -52,7 +54,7 @@ const getDownloadUrl = (url: string): string => {
  */
 const CourseMaterial = () => {
   // Every row shown on this page comes from src/data/course-materials.json
-  const slideSections = courseMaterials.sections as SlideSection[];
+  const slideSections = (courseMaterials.sections as SlideSection[]).filter((section) => !section.hidden);
 
   return (
     <>
@@ -62,7 +64,7 @@ const CourseMaterial = () => {
       {/* Hero section with book icon */}
       <HeroSection
         title="Course Material"
-        subtitle="Download lecture slides, discussion slides and supplementary materials"
+        subtitle="Download lecture slides and discussion slides"
         icon={<BookOpen className="h-12 w-12 text-blue-600" />}
       />
       
@@ -101,7 +103,7 @@ const CourseMaterial = () => {
                           {section.isCheatSheet ? 'Cheat Sheet' : 'Topic'}
                         </th>
                         <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900 w-32 bg-gray-100">
-                          PDF
+                          {section.linkColumnLabel ?? 'PDF'}
                         </th>
                       </tr>
                     </thead>

@@ -48,8 +48,6 @@ const Footer = () => {
         // External tools and platforms used in the course
         title: "Tools",
         links: [
-          { name: "Yuja", href: "https://www.yuja.com/", external: true },
-          { name: "Gradescope", href: "https://www.gradescope.com/", external: true },
           { name: "Github", href: "https://github.com/ucsc-cse-140", external: true },
           { name: "Canvas", href: "https://canvas.ucsc.edu", external: true },
         ],

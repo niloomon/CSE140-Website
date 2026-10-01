@@ -5,6 +5,7 @@
     "NO LINK YET: leave it as \"link\": \"\"  - the row still shows, with the word 'Canvas' in the PDF column.",
     "MODULE NUMBERS: \"number\" is the module, and it matches the M-prefix of the deck's file name in OneDrive (M0-00-Intro.pptx is module 0). A module can have several decks - just give each its own row with the same number.",
     "TO ADD A ROW: copy a whole { ... } line, paste it, change the words. Every row needs a comma after it EXCEPT the last one in a list.",
+    "TO HIDE A WHOLE SECTION: add  \"hidden\": true  next to that section's \"title\". The whole table disappears from the website but stays in this file.",
     "TO HIDE A ROW WITHOUT LOSING IT: add  \"hidden\": true  to that row. It disappears from the website but stays in this file. Delete those two words to bring it back.",
     "TO REMOVE A ROW: delete its whole { ... } line (and fix the commas so the last row has none).",
     "\"viewOnly\": true means show only a 'View' link and no 'Download' - use it for links to web pages rather than files.",
@@ -16,6 +17,7 @@
       "description": "Lecture decks open in OneDrive.",
       "columnLabel": "Module",
       "emptyLabel": "OneDrive",
+      "linkColumnLabel": "PPT",
       "items": [
         { "number": 0, "topic": "Intro", "link": "https://1drv.ms/p/c/6e432cb3cc755285/IQCMLCNS7mLcSLljBuyFENO3ARGQB7oWoValeb-v-Tzd_dI?e=VSm3hH", "viewOnly": true },
         { "number": 0, "topic": "Intelligent Agents", "link": "https://1drv.ms/p/c/6e432cb3cc755285/IQAvbMKOe4F3ToCXKNEBCiEQAaVB6o197c2iqLvNPuPQKDU", "viewOnly": true },
@@ -47,6 +49,7 @@
     },
     {
       "title": "Supplementary Material",
+      "hidden": true,
       "description": "Reference material to reinforce core concepts and refresh prerequisites.",
       "columnLabel": "Module",
       "items": [
@@ -61,6 +64,7 @@
     },
     {
       "title": "Cheat Sheet",
+      "hidden": true,
       "description": "Reference sheets for quizzes and exams are posted in Canvas when available.",
       "isCheatSheet": true,
       "items": [

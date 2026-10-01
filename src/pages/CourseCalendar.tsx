@@ -1,7 +1,8 @@
 /**
  * CourseCalendar.tsx - Course Calendar Page Component
  *
- * Quarter-specific dates and live calendar links are kept in Canvas.
+ * The "Current Calendar" box shows an embedded Google Doc.
+ * ⬇️ EDIT src/data/course-calendar.json — not this file — to change what it shows.
  */
 
 import React from 'react';
@@ -10,7 +11,28 @@ import Footer from '@/components/Footer';
 import HeroSection from '@/components/HeroSection';
 import { Calendar as CalendarIcon } from 'lucide-react';
 
+import calendarData from '@/data/course-calendar.json';
+
+/**
+ * Turns an ordinary Google Docs link into one that can be embedded.
+ * A link already ending in /preview or /pub is used as it is.
+ */
+const toEmbedUrl = (url: string): string => {
+  const trimmed = (url || '').trim();
+  if (!trimmed) return '';
+  if (/\/(preview|pub)(\?|$)/.test(trimmed)) return trimmed;
+
+  const docMatch = trimmed.match(/\/document\/d\/([a-zA-Z0-9_-]+)/);
+  if (docMatch) return `https://docs.google.com/document/d/${docMatch[1]}/preview`;
+
+  return trimmed;
+};
+
 const CourseCalendar = () => {
+  const heading = calendarData.heading || 'Current Calendar';
+  const embedUrl = toEmbedUrl(calendarData.embedUrl);
+  const height = calendarData.height || 800;
+
   return (
     <>
       <Navbar />
@@ -23,12 +45,35 @@ const CourseCalendar = () => {
 
       <div className="bg-white pb-8">
         <div className="container mx-auto px-4 py-8">
-          <div className="max-w-3xl mx-auto rounded-lg border border-gray-200 bg-gray-50 p-8 text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-3">Current Calendar</h2>
-            <p className="text-gray-700 leading-relaxed">
-              The live course calendar, deadlines, and schedule updates are posted in Canvas for the active quarter.
-            </p>
-          </div>
+          {embedUrl ? (
+            <div className="mx-auto max-w-5xl">
+              <h2 className="mb-4 text-center text-2xl font-bold text-gray-900">{heading}</h2>
+              <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
+                <iframe
+                  src={embedUrl}
+                  title={heading}
+                  loading="lazy"
+                  className="w-full"
+                  style={{ height: `${height}px`, border: 'none' }}
+                />
+              </div>
+              <p className="mt-3 text-center text-sm text-gray-600">
+                <a
+                  href={embedUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800"
+                >
+                  Open the calendar in a new tab
+                </a>
+              </p>
+            </div>
+          ) : (
+            <div className="mx-auto max-w-3xl rounded-lg border border-gray-200 bg-gray-50 p-8 text-center">
+              <h2 className="mb-3 text-2xl font-bold text-gray-900">{heading}</h2>
+              <p className="leading-relaxed text-gray-700">{calendarData.fallbackText}</p>
+            </div>
+          )}
         </div>
       </div>
 
